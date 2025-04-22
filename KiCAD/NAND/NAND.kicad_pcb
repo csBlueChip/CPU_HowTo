@@ -5524,6 +5524,32 @@
 			(justify left bottom)
 		)
 	)
+	(gr_text "~{&}"
+		(at 234.060295 116.687013 0)
+		(layer "F.Cu")
+		(uuid "c71eca51-f4c5-4f13-b44b-20c320a62c01")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "~{&}"
+		(at 235.891332 116.679112 0)
+		(layer "B.Cu")
+		(uuid "021669f8-575b-4549-b999-c06ebf0a707e")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom mirror)
+		)
+	)
 	(gr_text "A"
 		(at 225.416731 108.33429 0)
 		(layer "B.Cu")

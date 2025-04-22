@@ -4215,7 +4215,7 @@
 		(uuid "1ae291ec-f6ea-4889-aedb-b7cfc7ebaefe")
 	)
 	(gr_line
-		(start 231.139705 129.54329)
+		(start 235.585 129.54329)
 		(end 228.591731 129.54329)
 		(stroke
 			(width 0.2)
@@ -4703,6 +4703,19 @@
 			(justify left bottom)
 		)
 	)
+	(gr_text "!"
+		(at 218.054688 115.814609 0)
+		(layer "F.Cu")
+		(uuid "7975dabc-cf90-4b32-9308-47b6bfe5e7fd")
+		(effects
+			(font
+				(size 1.016 1.016)
+				(thickness 0.2032)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+	)
 	(gr_text "NOT"
 		(at 215.264705 107.95 0)
 		(layer "F.Cu")
@@ -4737,6 +4750,19 @@
 				(thickness 0.3175)
 			)
 			(justify left bottom mirror)
+		)
+	)
+	(gr_text "!"
+		(at 218.171619 118.054278 0)
+		(layer "B.Cu")
+		(uuid "7c3b6142-c0fb-4bc6-9d08-6cb082da9f7d")
+		(effects
+			(font
+				(size 1.016 1.016)
+				(thickness 0.2032)
+				(bold yes)
+			)
+			(justify left bottom)
 		)
 	)
 	(gr_text "Q"

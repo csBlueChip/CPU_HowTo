@@ -4885,6 +4885,17 @@
 		(layer "B.SilkS")
 		(uuid "4831e6ef-4cb3-4192-9979-3f709d0a7a00")
 	)
+	(gr_rect
+		(start 205.718702 112.8075)
+		(end 227.943702 124.8725)
+		(stroke
+			(width 0.127)
+			(type dot)
+		)
+		(fill no)
+		(layer "B.SilkS")
+		(uuid "4c6e9e71-a529-45be-a633-3bcd844eece7")
+	)
 	(gr_line
 		(start 256.826724 149.81249)
 		(end 258.096724 149.81249)
@@ -5649,6 +5660,18 @@
 			(justify left bottom mirror)
 		)
 	)
+	(gr_text "All schematics, designs, and\ndocumentation for this project\nare released under the most\npermissive licence I could find:"
+		(at 218.736202 111.22 0)
+		(layer "B.SilkS")
+		(uuid "1d0b26a6-44bb-4a03-bb25-12b1bd379e6a")
+		(effects
+			(font
+				(size 0.508 0.508)
+				(thickness 0.0635)
+			)
+			(justify bottom mirror)
+		)
+	)
 	(gr_text "D"
 		(at 230.166202 124.555 0)
 		(layer "B.SilkS")
@@ -5709,6 +5732,18 @@
 				(size 1.016 1.016)
 				(thickness 0.2032)
 				(bold yes)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(gr_text "Copyright BlueChip 2025.\n\nThis source describes Open Hardware and is licensed \nunder the CERN-OHL-P v2\n\nYou may redistribute and modify this documentation \nand make products using it under the terms of the \nCERN-OHL-P v2 (https:/cern.ch/cern-ohl).\n\nThis documentation is distributed WITHOUT ANY EXPRESS \nOR IMPLIED WARRANTY, INCLUDING OF MERCHANTABILITY, \nSATISFACTORY QUALITY AND FITNESS FOR A PARTICULAR \nPURPOSE. \n\nPlease see the CERN-OHL-P v2 for applicable conditions."
+		(at 227.141426 124.238167 0)
+		(layer "B.SilkS")
+		(uuid "44feaaa5-d683-443b-a918-1e817dd15024")
+		(effects
+			(font
+				(size 0.4572 0.4572)
+				(thickness 0.05715)
 			)
 			(justify left bottom mirror)
 		)
@@ -6089,6 +6124,22 @@
 		)
 	)
 	(segment
+		(start 237.913202 111.728)
+		(end 238.929202 111.728)
+		(width 0.2)
+		(layer "F.Cu")
+		(net 0)
+		(uuid "e0bcfe4a-e4c4-4fcd-b282-7514cea6a437")
+	)
+	(segment
+		(start 238.421202 112.236)
+		(end 238.421202 113.252)
+		(width 0.2)
+		(layer "F.Cu")
+		(net 0)
+		(uuid "e6c0f15a-2e4d-4f0b-98cd-93c13c8f7e75")
+	)
+	(segment
 		(start 213.529202 105.505)
 		(end 210.608202 105.505)
 		(width 0.254)
@@ -6159,6 +6210,14 @@
 		(layer "B.Cu")
 		(net 0)
 		(uuid "3c4988e6-c754-4e56-b413-5f1131e4cfb0")
+	)
+	(segment
+		(start 237.913202 111.728)
+		(end 238.929202 111.728)
+		(width 0.2)
+		(layer "B.Cu")
+		(net 0)
+		(uuid "45f4707f-c280-4db9-81a3-131de4d2fa98")
 	)
 	(segment
 		(start 213.021202 104.87)
@@ -6407,6 +6466,14 @@
 		(layer "B.Cu")
 		(net 0)
 		(uuid "f8162acb-2972-4780-b7a4-d1645c6b9e82")
+	)
+	(segment
+		(start 238.421202 112.236)
+		(end 238.421202 113.252)
+		(width 0.2)
+		(layer "B.Cu")
+		(net 0)
+		(uuid "f9727ca1-b301-463d-a40d-9519bdcf6588")
 	)
 	(segment
 		(start 231.013698 122.309032)
