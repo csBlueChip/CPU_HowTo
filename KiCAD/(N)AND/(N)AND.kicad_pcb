@@ -6770,6 +6770,17 @@
 		(uuid "f95df8a6-d72b-4f55-ad5c-4cb1a8dbf6b6")
 	)
 	(gr_rect
+		(start 203.199705 111.76)
+		(end 274.319705 173.99)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "Edge.Cuts")
+		(uuid "83f92bdb-555a-49da-b83d-b6fc09cd5cee")
+	)
+	(gr_rect
 		(start 194.8256 90.80499)
 		(end 265.9456 153.03499)
 		(stroke

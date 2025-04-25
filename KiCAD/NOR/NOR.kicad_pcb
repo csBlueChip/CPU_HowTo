@@ -4007,8 +4007,8 @@
 		(uuid "098870f7-a004-4a06-9905-62ebdbdac4b2")
 	)
 	(gr_line
-		(start 257.490157 138.41351)
-		(end 257.471202 135.35)
+		(start 257.495605 136.490537)
+		(end 257.47665 133.427027)
 		(stroke
 			(width 0.254)
 			(type default)
@@ -4047,8 +4047,8 @@
 		(uuid "143cfa56-c802-49bd-9910-bad5b03b4b96")
 	)
 	(gr_line
-		(start 256.836202 137.11249)
-		(end 258.106202 137.11249)
+		(start 256.84165 135.189517)
+		(end 258.11165 135.189517)
 		(stroke
 			(width 0.254)
 			(type solid)
@@ -4240,8 +4240,8 @@
 		(uuid "5d1df050-712a-4d12-bb6d-92bf80c1d5d4")
 	)
 	(gr_line
-		(start 257.308455 138.102543)
-		(end 257.655503 138.102543)
+		(start 257.313903 136.17957)
+		(end 257.660951 136.17957)
 		(stroke
 			(width 0.2032)
 			(type default)
@@ -4270,8 +4270,8 @@
 		(uuid "671bac5f-df09-4f28-9999-b152e13e9c97")
 	)
 	(gr_line
-		(start 257.482858 138.63649)
-		(end 257.190949 138.00149)
+		(start 257.488306 136.713517)
+		(end 257.196397 136.078517)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -4336,8 +4336,8 @@
 		(uuid "8e59b90b-f4ff-4ea0-8b6b-86da3f6ec528")
 	)
 	(gr_line
-		(start 257.016476 137.62049)
-		(end 257.947822 137.62049)
+		(start 257.021924 135.697517)
+		(end 257.95327 135.697517)
 		(stroke
 			(width 0.254)
 			(type default)
@@ -4366,8 +4366,8 @@
 		(uuid "9e01edb7-e89c-4e8d-b66c-b06574e0c285")
 	)
 	(gr_line
-		(start 257.190949 138.00149)
-		(end 257.79666 138.00149)
+		(start 257.196397 136.078517)
+		(end 257.802108 136.078517)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -4430,16 +4430,6 @@
 		(uuid "ba1667da-cdd0-41cd-b1cb-85c77c77a3f2")
 	)
 	(gr_line
-		(start 257.471202 135.35)
-		(end 257.471202 133.445)
-		(stroke
-			(width 0.508)
-			(type default)
-		)
-		(layer "F.SilkS")
-		(uuid "c3c515e8-c51c-4dde-89dc-30414ae322ec")
-	)
-	(gr_line
 		(start 208.408801 149.581974)
 		(end 209.678801 149.581974)
 		(stroke
@@ -4460,8 +4450,8 @@
 		(uuid "cca1daac-82a2-4b67-9a2a-fba145540ec9")
 	)
 	(gr_line
-		(start 257.374405 138.210656)
-		(end 257.598202 138.207412)
+		(start 257.379853 136.287683)
+		(end 257.60365 136.284439)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -4500,8 +4490,8 @@
 		(uuid "d3741391-617d-4bdf-8270-6d3cdffa1941")
 	)
 	(gr_line
-		(start 257.79666 138.00149)
-		(end 257.482858 138.63649)
+		(start 257.802108 136.078517)
+		(end 257.488306 136.713517)
 		(stroke
 			(width 0.1)
 			(type default)
