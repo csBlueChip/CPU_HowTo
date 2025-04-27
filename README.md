@@ -1,4 +1,4 @@
-<img src="KiCAD/NAND/NAND_front.jpg" width="420"/>&nbsp;&nbsp;&nbsp;<img src="KiCAD/NAND/NAND_back.jpg" width="420"/><br/>
+<img src="KiCAD/NAND/NAND_front.jpg" width="400"/>&nbsp;&nbsp;&nbsp;<img src="KiCAD/NAND/NAND_back.jpg" width="400"/><br/>
 <img src="KiCAD/NOR/NOR_front.jpg" width="420"/>&nbsp;&nbsp;&nbsp;<img src="KiCAD/NOR/NOR_back.jpg" width="420"/><br/>
 <img src="KiCAD/NOT/NOT_front.jpg" width="420"/>&nbsp;&nbsp;&nbsp;<img src="KiCAD/NOT/NOT_back.jpg" width="420"/><br/>
 <img src="KiCAD/(N)AND/(N)AND_front.jpg" width="420"/>&nbsp;&nbsp;&nbsp;<img src="KiCAD/(N)AND/(N)AND_back.jpg" width="420"/><br/>
