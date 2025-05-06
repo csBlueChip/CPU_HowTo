@@ -1,0 +1,2642 @@
+
+!                                                                               .
+!         D3 D2 D1 D0                                                                      .
+!         |  |  |  |                                                                  .
+!         |,-'  |  |                                                                  .
+!         ||,---'  |                                                                   .
+!         |||,-----'                                                                   .
+!         ||||                                                                       .
+!         \::/                                                                      .
+!     |    M'                                                                    .
+!     |    M                                                                    .
+!     |    M                                                                    .
+!   ,-v----M-.                                                                  .
+!   | En   D |                                                                  .
+!   | _ DL:4 |     4 bit D-Type Latch                                           .
+!   | Q    Q |                                                                  .
+!   `-M----M-'                                                                  .
+!     M    M                                                                    .
+!                                                                               .
+!                                                                               .
+!                                                                               .
+!                                                                               .
+!                                                                               .
+!                                                                               .
+
+
+
+~~~~ ,------------------------.                                                 .
+~~~ (  How did this get here?  ) ===============================================.
+~~~~ `------------------------'                                                 .
+
+
+
+!	  |    |         |    |                                                                    .
+!	,-v----M-.     ,-v----M-.                                                                  .
+!	| E    D |     | E    D |                                                                  .
+!	| _ DL:4 |     | _ DL:4 |                                                                  .
+!	| Q    Q |     | Q    Q |                                                                  .
+!	`-M----M-'     `-M----M-'                                                                  .
+!	  |    |         |    |                                                                    .
+!                                                                                  .
+
+
+
+
+
+
+
+(o) 2's Complement module with {Enable} Input                                   .
+!                                                                               .
+!    3210                                                                       .
+!    ||||   .------------------------------,                                    .
+!    ||||   |           _                  |                                    .
+!    ||||   +---[e]---\\ `._____           |                                    .
+!    |||`---{---[0]---//_,'     `.         |                                    .
+!    |||    |           _        |         |                                    .
+!    |||    +---[e]---\\ `.____  |         |                                    .
+!    ||`----{---[1]---//_,'    `.|         |                                    .
+!    ||     |           _       ||         |                                    .
+!    ||     +---[e]---\\ `.___  ||         |                                    .
+!    |`-----{---[2]---//_,'   `.||         |                                    .
+!    |      |           _      |||         |                                    .
+!    |      `---[e]---\\ `.__  |||         |                                    .
+!    `----------[3]---//_,'  `.|||         |                                    .
+!                             ||||         |                                    .
+!                             ||||         |                                    .
+!                             |:;/         |                                    .
+!                             \W/          |                                    .
+!                              M           |                                    .
+!                              M           |                                    .
+!                              M           |                                    .
+!                           ,--M--.        |                                    .
+!                           !  A+1|        |                                    .
+!                        X--<C 4 e<--------+--- Enable                          .
+!                           !  S  |                                             .
+!                           `--M--'                                             .
+!                              M                                                .
+!                              M                                                .
+!                             /W\                                               .
+!                             |::\                                              .
+!                             ||||                                              .
+!                             3210                                              .
+!                                                                               .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+~~~~ ,----------------------.                                                   .
+~~~ (  A Simple Logic Probe  ) =================================================.
+~~~~ `----------------------'                                                   .
+
+https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWcMBMcUHYMGZIA4UA2ATmIxAUgoqoQFMBaMMAKADMLiUKNDPvCAFirDw0JDEgoWAJRCDifISKEhlUDaIkaYCFgCd5itVt4mqVMPBYB3HktN8MkQVBYBzNfnM-1FlgDK-BQoeMGCqpYgbACGADYAznQa0nKE3hGu6WGC2NwW8rQ6UOIe9vKqCGaCgmH+hghcIWGN3FV8ltZyGGggzq68Yf3FWsW6LGCEAqLD7X0uINwAJnSxAK5xAC4McXRL4GOwrIbqwz1Uw52QBmoornjGww8dyNeTAncgzxTpX8bLqxiG22u32EAKklY3QW3wwCG43wKowhpU8rS+eVu90x-jsCF+eEx+KoiJutRJRIJONe1zk5Ix3BqYUJ+U0RRReg4c0G5RZhTEElg0jxZh53IW1yAA
+
+Lightbulbs are passe nowdays.
+Let's replace the lightbulb with something more viable...
+
+Example Output Devices (observers) include:
+   # Light bulb
+   # Beeper
+   # Motor
+   # Multimeter
+   # Oscilloscope
+
+All of these devices "act" as (type of) "resistor" (aka. a "resistive load").
+
+Other example Output Devices include:
+   # LED
+   # Another transistor             <~foreshadowing~>
+
+These devices do NOT act as a "resistor" (in any relevant way)
+So, when we use them as an Output Device, we MUST "add a resistor in series" [*]
+
+[*] This is a form of "current limiting" for the purpose of "circuit protection"
+
+We will use an LED (with a current limiting resistor, in series) to build :-
+
+   "The World's Simplest Logic Meter" ... NB. This is NOT a "Logic Probe"!
+
+# If (sufficient) power is flowing through the Meter, the LED will be "ON"
+# If (close-to) 0 power is flowing through the Meter, the LED will be "OFF"
+
+(o) Build a Logic Meter to use as an Output Device                              .
+!                                                                               .
+!         ,----------------.               _                                    .
+!        :            ,,    :            .' `.           0 : LED is OFF         .
+!     ---|----[###]---|>----|---     ---( 0/1 )---       1 : LED is ON          .
+!        :                  :            `._.'                                  .
+!         `----------------'                                                    .
+!               CIRCUIT                  SYMBOL                                 .
+!                                                                               .
+
+(o) Add an Output Device to the switch circuit  (circuit)                       .
+!                                                                               .
+!                 [+V]---.                                                      .
+!                        |                                                      .
+!                        |                                                      .
+!		               .' `.                                                    .
+!                     ( 0/1 )                                                   .
+!                      `._.'                                                    .
+!                        |                                                      .
+!		         ___     |    __V__                                             .
+!      [+V]-----[###]----+-----o o------|----[###]---[Gnd]                      .
+!                                                                               .
+
+!                                        ,----------------.                     .
+!		         ___          __V__     :            ,,    :                    .
+!      [+V]-----[###]----+-----o o------|----[###]---|>----|-----[Gnd]          .
+!                                       :                  :                    .
+!                                        `----------------'                     .
+
+Let's use the smaller symbol...
+
+(o) Add an Output Device to the switch circuit  (symbol)                        .
+!                                          _                                    .
+!		         ___          __V__      .' `.                                  .
+!      [+V]-----[###]----+-----o o------( 0/1 )-----[Gnd]                       .
+!                                        `._.'                                  .
+!                                                                               .
+
+The      switch       will act as out "Input" {A}
+The "0/1 Logic Meter" will act as our "Output" {Y}
+
+(o) Label the Input {A}, and the Output {Y}                                     .
+!                                                                               .
+!                              (A)                                              .
+!                               |                                               .
+!		         ___          __V__       .-.                                   .
+!      [+V]-----[###]----+-----o o-------( Y )------[Gnd]                       .
+!                                         `-'                                   .
+!                                                                               .
+
+(o) Replace the physical switch with an electronic one                          .
+!                                                                               .
+!                          [+V] = press                                         .
+!                           Gnd = release                                       .
+!                                                                               .
+!                              (A)                                              .
+!                               |                                               .
+!		                      __V__                                             .
+!		         ___          |   |       .-.                                   .
+!      [+V]-----[###]----+----'   `------( Y )------[Gnd]                       .
+!                                         `-'                                   .
+!                                                                               .
+
+If we connect { A -> [+V] }, that is equivalent to { Pressing  } the switch
+If we connect { A -> Gnd  }, that is equivalent to { Releasing } the switch
+
+If A is {+V,  Pressed } we say A is {1, High, True,  On,  Set,   Enabled,  ...}
+If A is {Gnd, Released} we say A is {0, Low,  False, Off, Reset, Disabled, ...}
+
+(o) Add a Mechanism to connect the Input {A} to Either {+V} or {Gnd}            .
+!                                                                               .
+!                           Gnd   [+V]                                          .
+!                            |     |                  Single Pole {A}           .
+!                            |     |                  ||                        .
+!                    Release o\    o Press            ||                        .
+!                       0      \       1         <-- "SPDT" Switch              .
+!                               o                       ||                      .
+!                               |                       ||                      .
+!                               |                       Double Throw {Gnd, +V}  .
+!                              (A)                                              .
+!                               |                                               .
+!		                      __v__                                             .
+!		         ___          |   |       .-.                                   .
+!      [+V]-----[###]----+----'   `------( Y )------[Gnd]                       .
+!                                         `-'                                   .
+!                                                                               .
+
+The Input Mechanism can be:
+	# A normal switch (SPDT)
+	# Thermostat
+	# Infra-red receiver (demodulator)
+	# Door sensor (reed switch)
+	# ...
+	# Another transistor            <~foreshadowing~>
+
+(o) Add a "circuit protection" resistor to the Input                            .
+!                                                                               .
+!                           Gnd   [+V]                                          .
+!                            |     |                                            .
+!                            |     |                                            .
+!                    Release o\    o Press                                      .
+!                       0      \       1                                        .
+!                               o                                               .
+!                               |                                               .
+!                              :#:                                              .
+!                              :#:                                              .
+!                              :#:                                              .
+!                               |                                               .
+!                              (A)                                              .
+!                               |                                               .
+!		                      __V__                                             .
+!		         ___          /   \       .-.                                   .
+!      [+V]-----[###]----+---'     `-----( Y )------[Gnd]                       .
+!                                         `-'                                   .
+
+Feel free to play see this circuit in action
+https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWEBmaCCc7nLADl8ggGwBMB6RICyVVkVApgLRhgBQALiACy73dhKvfr3BiYpdN3QIA7N2IISkdCXRRoRedK1gSJZLLAJcETJhAATBgDMAhgFcANhzYB3HshI9R3Itx9cKHceCkCqIhEgyDYAJRRlcLIg7lF6fnokdI0ENgAnHj4UZCEikllvemUYgGVCquJ6kH0A+gh7JwBnBihmtgBzHn9mkgC-AOVo4IAPQtkeSDGLbkh5gLwQAEE40MoW3fBVXozabJhc2ekJhEzF5uoecCD2S4eSBAg-Gnexp+CPQjeZC4ALEejA1ohQEHBCpA4xDxglAgiL8MIxWYlDIpAw8ViPUYgABCDhsNgYeTYgm8sjuqSCsiIKVE3ms9mcHCYTgYlnEx1g7EGBG89JAIOZUwxPiQghoH3mgiEzQCAEkAHIABQAqgAVNizIikPEMyI8EifZUgADyuu1etmsP4hioSh8-D+AE0QpEJSB-FFgsp5v7wiGSikQAAdGIrGikAJeeiyFEQ3rmgD6XnTkHT0zIYEggnTCGzsHg6EZxHe6ZY6bAdfTshrcm9hMTIGTCcSCL9bZRjKCqZ78YS9BHQ5CndHHZTKJ7A-CfADUpBIoqYuG3FkSHW3gA4gA7Sz5Twi0Th8JtOD6lCNLcJ5M8WRrP6RgAOADUQsI8aVwXPvzKdcf3eSge2hVNoR0YIClpMZRBDUUrx7bgvFvEU0L0aIQiUQdXVw8AyH+P1IEHO4fSaYdSJQO4lxoyEPDo5BaLgSjJxRH8KJ-cCmXCKC0ihV1RXbJDAPBEomgnRFTVFLiBI8VDvCwqgiOUlC0OhD4gVdHs6NFYVLzYYFmggAAxCA2nAeAQBYEAdQYaZXCAA
+```
+$ 1 0.000005 3.5993318835628396 53 5 50 5e-11
+t 480 416 480 448 1 1 0.6294957456520929 0.6744967122371581 9999 default
+w 432 448 464 448 0
+w 496 448 560 448 0
+R 320 448 288 448 0 0 40 5 0 0 0.5
+r 480 336 480 272 0 200
+S 480 256 480 224 0 1 false 0 2
+g 464 224 464 208 0 0
+x 487 404 499 407 4 18 A
+R 496 224 496 192 0 0 40 5 0 0 0.5
+x 494 250 504 253 4 18 1
+x 453 251 463 254 4 18 0
+w 352 384 560 384 0
+w 352 496 544 496 0
+w 560 384 560 496 0
+x 360 408 423 411 4 24 Buffer
+162 704 448 768 448 2 default-led 1 0 0 0.01
+g 832 448 848 448 0 0
+x 445 163 517 166 4 24 INPUT
+x 662 418 760 421 4 24 OUTPUT
+x 540 437 552 440 4 18 Y
+w 608 448 640 448 0
+207 640 448 640 368 4 \0
+403 624 320 784 384 0 21_32_0_x281016_5_0.00009765625_-1_1_1_7_-57
+w 624 320 784 320 0
+w 624 384 768 384 0
+w 624 320 624 384 0
+w 784 320 784 384 0
+w 768 448 800 448 0
+x 842 472 864 475 4 12 Gnd
+r 432 448 368 448 0 100
+x 356 474 378 477 4 18 \pV
+w 480 416 480 384 0
+w 480 272 480 256 0
+w 352 384 352 496 0
+r 704 448 640 448 0 100
+w 432 352 432 128 0
+w 528 352 528 128 0
+w 608 304 608 480 0
+w 608 304 800 304 0
+w 800 304 800 480 0
+w 784 480 608 480 0
+w 368 448 352 448 0
+w 352 448 320 448 0
+w 480 336 480 384 0
+w 560 448 608 448 0
+w 432 128 528 128 0
+w 432 352 512 352 0
+w 800 448 832 448 0
+38 21 F1 0 1 1000 -1 Text
+```
+
+
+
+~~~~ ,---------------------------------.                                        .
+~~~ (  It's Two Diodes in a Trenchcoat  ) ======================================.
+~~~~ `---------------------------------'                                        .
+
+So. This "NPN" variant of the "BJT" transistor...
+
+...Is made by glueing two Diodes together, in series.
+
+A Diode is a piece of wire that only works in one direction.
+
+Actually, that's a total lie, there are 24 different type of Diodes,
+https://www.electricaltechnology.org/2018/12/types-of-diodes-their-applications.html
+...but the only one we care about today is the "P-N Junction Diode"
+
+The circuit symbol for a PN Junction Diode is a triangle with a line.
+
+	# The base of the triangle
+        is the "P" (positive/"+") side
+
+	# The line (that looks like a giant minus sign)
+        is the "N" (negative/"-"/{Gnd}/0V) side
+
+!          .                                                                    .
+!   P      |`.  |      N                                                        .
+!  (+)_____|  `.|_____(-)          ---|>|---                                    .
+!          |  ,'|                                                               .
+!     in   |.'  |  out                                                          .
+!          `                                                                    .
+!               ^-- this, to me, looks like a giant minus sign                  .
+!                                                                               .
+
+For elctricity to flow throught a PN Diode, the voltage [potential] at
+  the {+} side  MUST be HIGHER than  the {-} side
+
+If you turn it around, it will act like a break in the wire
+
+Actually if you push enough Current through it,
+  it will eventually "break down" and work like a "wire"  in both directions
+and if you push even MORE Current though it,
+  it will eventually "explode"    and work like a "break" in both directions
+We will be ignoring these edge cases!
+
+Remembing that (in Electronics) electricity is said to flow from {+} to {-}
+...Let's replace our light switch with a diode:
+
+!                                                                               .
+!                                            :    ON                            .
+!                                          ` _ '                                .
+!              ---->                      ~ (~) ~                               .
+!               P N                          #                                  .
+!       (+)-----|>|------------------------[###]-----(-)                        .
+!                                                                               .
+!               ^^^--- diode ("reverse bias" mode)                              .
+!                                                                               .
+
+!                                                                               .
+!                                            _   OFF                           .
+!              <----                        (~)                                 .
+!               N P                          #                                  .
+!       (+)-----|<|------------------------[###]-----(-)                        .
+!                                                                               .
+!               ^^^--- diode ("forward bias" mode)                              .
+!                                                                               .
+
+So what happens if we put two diodes in series
+
+!                                                                               .
+!                                            :    ON (dimmer)                   .
+!                                          ` _ '                                .
+!              ---->    ---->             ~ (~) ~                               .
+!               P N      P N                 #                                  .
+!       (+)-----|>|------|>|---------------[###]-----(-)                        .
+!                                                                               .
+
+!                                                                               .
+!                                            _   OFF                           .
+!              <----    <----               (~)                                 .
+!               N P      N P                 #                                  .
+!       (+)-----|<|------|<|---------------[###]-----(-)                        .
+!                                                                               .
+
+So long as they are all pointing the same way, nothing really changes.
+
+Actually, each one costs about 0.7 volts,
+so if you started with a 1.5 volt battery,
+you wouldn't have enough Volts left to pay the gatekeeper at the 3rd one.
+
+Also: We're now paying 1.4 Volts to travel along the wire,
+so there are fewer Volts left over for the Bulb to convert to photons,
+...so it will be dimmer.
+
+The big question is:
+	What happens if we put them pointing at (or away from) each other?
+
+Let's start with the "NPN BJT"
+
+!                                                                               .
+!                                            _   OFF                           .
+!              <----    ---->               (~)                                 .
+!               N P      P N                 #                                  .
+!       (+)-----|<|------|>|---------------[###]-----(-)                        .
+!                                                                               .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+~-~ K.I.S.S. ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~    .
+
+Keep It Simple, Stupid!
+
+We CAN ASSUME the Input {A}:
+	# is any "on"/"off", "yes"/"no", "up"/"down", "0"/"1" mechanism
+	# will ALWAYS be connected to either {+V} or {Gnd}
+
+(o) Remove the Input Mechanism from the diagram                                 .
+!                                                                               .
+!                               o                                               .
+!                               |                                               .
+!                              :#:                                              .
+!                              :#:                                              .
+!                              :#:                                              .
+!                               |                                               .
+!                              (A)                                              .
+!                               |                                               .
+!		                      __V__                                             .
+!		         ___          /   \       .-.                                   .
+!      [+V]-----[###]----+---'     `-----( Y )------[Gnd]                       .
+!                                         `-'                                   .
+!                                                                               .
+
+When you MAKE   a Roller Coaster, the {weld joints} are ESSENTIAL / CRITICAL.
+When you DESING a Roller Coaster, you can just ASSUME they will be there!
+
+In "Circuit Design", the {resistors} are ESSENTIAL / CRITICAL.
+In "Logic   Design", we can just ASSUME they are there.
+
+(o) Omit the current limiting resistors                                         .
+!                                                                               .
+!                     (A)                                                       .
+!                      |                                                        .
+!		             __V__                                                      .
+!		             /   \       .-.                                            .
+!      [+V]-----+---'     `-----( Y )------[Gnd]                                .
+!                                `-'                                            .
+!                                                                               .
+
+
+
+~~~~ ,------------------.                                                       .
+~~~ (  The Truth Buffer  ) =====================================================.
+~~~~ `------------------'                                                       .
+
+So far, we've made this:
+
+(o) The BUFFER                                                                  .
+!                                                                               .
+!                     (A)                                                       .
+!                      |                                                        .
+!		             __V__                                                      .
+!		             /   \       .-.                                            .
+!      [+V]-----+---'     `-----( Y )------[Gnd]                                .
+!                                `-'                                            .
+!                                                                               .
+
+It is THE primitive building block of everything that follows
+
+It is know as called the:
+	# "IS gate"
+	# "Truth gate"
+	# "{A} gate"
+	# "BUFFER"
+...all are equally valid.
+
+It has a Logic/Truth Table that looks like this:
+
+    If INPUT is 0, then OUTPUT is 0
+    If INPUT is 1, then OUTPUT is 1
+
+          .----------------.
+          | INPUT | OUTPUT |
+          |   A   |   Y    |
+          +-------+--------+
+          |   0   |   0    |
+          |   1   |  =1=   |          <-- The "=" are simply a visual aid
+          '----------------'
+
+The symbol for a "BUFFER" is a triangle
+
+(o) BUFFER pocket reference                                                     .
+!                                                                               .
+!       |`.                                                                     .
+!       |  `.                                               |   A   |   Y   |   .
+!   A---|    `.---Y           BUFFER        ---|>---        +-------+-------+   .
+!       |   .'                                              |   0   |   0   |   .
+!       | .'                                                |   1   |  =1=  |   .
+!       |'                                                                      .
+!                   if  (A == 1)  then  {Y=1}  else  {Y=0}                      .
+!                                                                               .
+
+
+~~~~ ,------------------------.                                                 .
+~~~ (  Let's build some gates  ) ===============================================.
+~~~~ `------------------------'                                                 .
+
+Right. We have all the tools we need (ie. A "BUFFER")
+...Let's make a serious start on building our CPU...
+
+So far, we have designed this circuit:
+
+(o) BUFFER                                                                      .
+!                                                                               .
+!                     (A)                                                       .
+!                      |                                                        .
+!		             __V__                                                      .
+!		             /   \       .-.                                            .
+!      [+V]-----+---'     `-----( Y )------[Gnd]                                .
+!                                `-'                                            .
+!                                                                               .
+
+And we have called it a "BUFFER"
+
+The programming equivalent is:
+	if  (A == 1)  then  Y=1  else  Y=0
+
+(o) Here is 'top-pocket reference card' for "BUFFER"                            .
+!                                                                               .
+!       |`.                                                                     .
+!       |  `.                                               |   A   |   Y   |   .
+!   A---|    `.---Y           BUFFER        ---|>---        +-------+-------+   .
+!       |   .'                                              |   0   |   0   |   .
+!       | .'                                                |   1   |  =1=  |   .
+!       |'                                                                      .
+!                   if  (A == 1)  then  {Y=1}  else  {Y=0}                      .
+!                                                                               .
+
+As you would expect, there are also other types of "gate"
+
+A "gate" is:  A circuit which performs a single, simple, logical operation.
+
+Typical examples are
+	  NOT A  ... If        A                is       True ... You do NOT win!
+
+	A AND  B ... if        A AND B          are both True ... You win!
+	A NAND B ... if        A AND B          are both True ... You do NOT win!
+
+	A OR   B ... if either A OR B (or both) are      True ... You win!
+	A NOR  B ... if either A OR B (or both) are      True ... You do NOT win!
+
+	A XOR  B ... if only   A OR B           is       True ... You win!
+	A XNOR B ... if only   A OR B           is       True ... You do NOT win!
+
+...More DO exist!  <~foreshadowing~>
+
+
+~-~~  ,-----.    .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+~-~~ (  AND  ) ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~ .
+~-~~  `-----'    `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  .
+
+Let's add a second switch/transistor {B} to our bulb circuit
+
+We'll put this switch "in Series" and see what happens
+
+(o) AND transistor circuit diagram .. (current limiting resistors omitted)      .
+!                                                                               .
+!                     (A)         (B)                                           .
+!                      |           |                                            .
+!		             __V__       __V__                                          .
+!		             /   \       /   \       .-.                                .
+!      [+V]-----+---'     `-----'     `-----( Y )------[Gnd]                    .
+!                                            `-'                                .
+!                                                                               .
+
+Now |  {Y}  | will only |be 1| if both ({A} AND {B}) are  |         1          |
+	:-------:           :----:         :-----------:      :--------------------:
+ie. The light will only go on  if both  {A} AND {B}  are  pressed simultaneously
+
+
+So, we have just built an "AND" gate.
+...Which has this Logic/Truth Table:
+
+	.----------------.
+	|  AND  | OUTPUT |
+	| A | B |   Y    |            {A/B}    {Y}  Bulb
+	+----+--+--------+           --------  ---  ----
+	| 0 | 0 |   0    |    0  =>  released  0V   Off
+	| 0 | 1 |   0    |    1  =>  pressed   +V   On
+	| 1 | 0 |   0    |
+	| 1 | 1 |  =1=   |
+	'----------------'
+
+To save effort as we move forward, let's pick a symbol which means
+	"Two transistors, (and the relevant current limiting resistors),
+	 organised in such a way that affects a logical AND"  [**]
+
+The symbol for "AND" is a rectangle with one rounded end (the output end)
+
+(o) "AND" pocket reference                                                      .
+!                                                                               .
+!	    +-----.                                             | A | B |   Y   |   .
+!	A---|      \                                __          +----+--+-------+   .
+!	    |       }---Y         AND           ---|  \___      | 0 | 0 |   0   |   .
+!	B---|      /                            ---|__/         | 0 | 1 |   0   |   .
+!	    +-----'                                             | 1 | 0 |   0   |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!   if  ((A == 1) && (B == 1))  then  {Y=1}  else  {Y=0}                        .
+!                                                                               .
+
+[**] I say "transistors", we've already seen
+        you can make a switch out of
+           # plastic 'n' springs 'n' stuff
+        you can even make one out of
+           # water pipes      : https://www.youtube.com/watch?v=IxXaizglscw
+           # marbles          : https://www.youtube.com/watch?v=TTK-vcwSm7s
+           # car relays       : https://www.youtube.com/watch?v=e8DavnWmr1E
+           # Minecraft blocks : https://www.youtube.com/watch?v=IOoy_eG8efI
+
+      But computers made of marbles, in deference to their true awesomeness,
+	  tend to be very /very/ big ...and are (in honesty) a bit crap.
+      ...So let's stick with transistors for now.
+
+
+~-~~ ,----.    .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    .
+~-~ (  OR  ) ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~  .
+~-~~ `----'    `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `    .
+
+What if we put the switches/transistors in parallel?
+
+(o) OR transistor circuit diagram .. (current limiting resistors omitted)       .
+!                                                                               .
+!                     (B)                                                       .
+!                      |                                                        .
+!		             __V__                                                      .
+!		             /   \                                                      .
+!               ,---'     `---.                                                 .
+!               |             |                                                 .
+!               |     (A)     |                                                 .
+!               |      |      |                                                 .
+!		        |    __V__    |                                                 .
+!		        |    /   \    |     .-.                                         .
+!      [+V]-----+---'     `---+----( Y )------[Gnd]                             .
+!                                   `-'                                         .
+!                                                                               .
+
+Now the light will go on, if either A *OR* B (OR both) is(/are) being pressed
+
+		.----------------.
+		|  OR   | OUTPUT |
+		| A | B |   Y    |
+		+----+--+--------+
+		| 0 | 0 |   0    |
+		| 0 | 1 |  =1=   |
+		| 1 | 0 |  =1=   |
+		| 1 | 1 |  =1=   |
+		'----------------'
+
+The "OR" gate symbol is a long (isosceles) triangle with curved sides
+
+(o) OR pocket reference                                                         .
+!                                                                               .
+!	    +--._                                               | A | B |   Y   |   .
+!	A----\   `-.                                _           +----+--+-------+   .
+!	      }    ,'---Y         OR            ---\ `.___      | 0 | 0 |   0   |   .
+!	B----/  _,'                             ---/_,'         | 0 | 1 |  =1=  |   .
+!	    +--'                                                | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!   if  ((A == 1) || (B == 1))  then  {Y=1}  else  {Y=0}                        .
+!                                                                               .
+
+
+~-~~  ,-----.    .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+~-~~ (  NOT  ) ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~ .
+~-~~  `-----'    `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  .
+
+The next one takes a bit of lateral thinking.
+
+We want the "NOT" gate (aka. the "INVERTER"). Ie.
+	If the switch is {Pressed} , the light must go {OFF}
+	If the switch is {Released}, the light must go {ON}
+
+Recall this:
+(o) BUFFER - Output Mechanism in Series                                         .
+!                                                                               .
+!                     (A)                                                       .
+!                      |                                                        .
+!		             __V__                                                      .
+!		             /   \       .-.                                            .
+!      [+V]-----+---'     `-----( Y )------[Gnd]                                .
+!                                `-'                                            .
+!                                                                               .
+
+What happens if we put the Output Device "in Parallel" with the switch?
+
+(o) Output Mechanism to be in Parallel                                          .
+!                                                                               .
+!                     (A)                                                       .
+!                      |                                                        .
+!		             __V__                                                      .
+!		             /   \                                                      .
+!      [+V]-----+---'     `---+------------[Gnd]                                .
+!               |                                                               .
+!		        |                .-.                                            .
+!               `---------------( Y )------[Gnd]                                .
+!                                `-'                                            .
+!                                                                               .
+
+When {A} is 0 (ie. the switch is "Open", breaking the circuit)
+	The only pathway from {+V} to {Gnd} is via {Y}
+	So {Y} will be 1
+
+When {A} is 1 (ie. the switch is "Closed", completing the circuit)
+	There are TWO pathways from {+V} to {Gnd}
+		# via {Y}
+		# via the transistor {A}
+	Electricity ALWAYS takes the most direct path to {Gnd} (...'cos: Physics)
+
+Remember:
+	Output Devices ALWAYS present SOME (significant) level of "resistance"
+
+The path via  {A}  will encounter  (virtually) NO resistance
+The path via  {Y}  will encounter  the resistance of the Logic Meter
+
+The electricity will (literally) "take the path of least resistance"
+
+Ie. It WILL     go via the transistor {A}
+    It will NOT go via {Y}  ...  Therfore the light will NOT come on
+
+ !!! Once More... !!!
+
+If we move the Output point to "BEFORE" the switch,
+  we get the opposite reading!
+
+	When {A} is 1, {+V} go to {Gnd} via the transistor, and {Y} will be 0
+	When {A} is 0, {+V} go to {Gnd} via     {Y}       , and {Y} will be 1
+
+~-~ NOT a Symbol ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~    .
+
+The symbol for "NOT" is a tiny circle.
+
+When we ONLY want to "NOT" the Input {A}
+we think of it as being a "inverted BUFFER" and draw it like this:
+
+(o) NOT pocket reference                                                        .
+!                                                     Gnd                       .
+!	    |`.                                                                     .
+!	    |  `.  _                                            |   A   |   Y   |   .
+!	A---|    `(_)---Y         NOT           ---|>o---       +-------+-------+   .
+!	    |   .'                "IS NOT"                      |   0   |  =1=  |   .
+!	    | .'                  "INVERTER"                    |   1   |   0   |   .
+!       |'                                                                      .
+!                   if  (A == 1)  then  {Y=0}  else  {Y=1}                      .
+!                                                                               .
+
+...Ie. The symbol actually reads as "IS NOT"
+
+
+~~~~ ,----------------------------------.                                       .
+~~~ (  We know how to make simple gates  ) =====================================.
+~~~~ `----------------------------------'                                       .
+
+You now know how build any of these gates using only transistors.
+
+(o) BUFFER pocket reference                                                     .
+!                                                                               .
+!       |`.                                                                     .
+!       |  `.                                               |   A   |   Y   |   .
+!   A---|    `.---Y           BUFFER        ---|>---        +-------+-------+   .
+!       |   .'                                              |   0   |   0   |   .
+!       | .'                                                |   1   |  =1=  |   .
+!       |'                                                                      .
+!                   if  (A == 1)  then  {Y=1}  else  {Y=0}                      .
+!                                                                               .
+
+
+(o) NOT pocket reference                                                        .
+!                                                                               .
+!	    |`.                                                                     .
+!	    |  `.  _                                            |   A   |   Y   |   .
+!	A---|    `(_)---Y         NOT           ---|>o---       +-------+-------+   .
+!	    |   .'                "IS NOT"                      |   0   |  =1=  |   .
+!	    | .'                                                |   1   |   0   |   .
+!       |'                                                                      .
+!                   if  (A == 1)  then  {Y=0}  else  {Y=1}                      .
+!                                                                               .
+
+
+(o) AND pocket reference                                                        .
+!                                                                               .
+!	    +-----.                                             | A | B |   Y   |   .
+!	A---|      \                                __          +----+--+-------+   .
+!	    |       }---Y         AND           ---|  \___      | 0 | 0 |   0   |   .
+!	B---|      /                            ---|__/         | 0 | 1 |   0   |   .
+!	    +-----'                                             | 1 | 0 |   0   |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!   if  ((A == 1) && (B == 1))  then  {Y=1}  else  {Y=0}                        .
+!                                                                               .
+
+
+(o) OR pocket reference                                                         .
+!                                                                               .
+!	    +--._                                               | A | B |   Y   |   .
+!	A----\   `-.                                _           +----+--+-------+   .
+!	      }    ,'---Y         OR            ---\ `.___      | 0 | 0 |   0   |   .
+!	B----/  _,'                             ---/_,'         | 0 | 1 |  =1=  |   .
+!	    +--'                                                | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!   if  ((A == 1) || (B == 1))  then  {Y=1}  else  {Y=0}                        .
+!                                                                               .
+
+
+~~~~ ,---------------.                                                          .
+~~~ (  Compound Gates  ) =======================================================.
+~~~~ `---------------'                                                          .
+
+Other gates are useful.
+
+You may have heard that your flash memory is either "NAND" or "NOR" technology
+...So let's build those gates
+
+https://www.geeksforgeeks.org/differences-between-nand-vs-nor-flash-memory/
+
+
+~-~~ ,------.    .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+~-~ (  NAND  ) ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~ .
+~-~~ `------'    `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  .
+
+Let's build NAND first:-
+
+Here is the AND truth table and the NAND / NOT-AND table
+	.----------------.	      .----------------.
+	|  AND  | OUTPUT |	      |  NAND | OUTPUT |
+	| A | B |   Y    |	      | A | B |   Y    |
+	+----+--+--------+	      +----+--+--------+
+	| 0 | 0 |   0    |	      | 0 | 0 |  =1=   |
+	| 0 | 1 |   0    |	      | 0 | 1 |  =1=   |
+	| 1 | 0 |   0    |	      | 1 | 0 |  =1=   |
+	| 1 | 1 |  =1=   |	      | 1 | 1 |   0    |
+	'----------------'	      '----------------'
+
+So we can take the output of an AND gate,
+...and put THAT result through a NOT gate
+...to get NOT(AND) / NAND
+
+The symbol is an AND with a NOT (tiny circle) after it
+
+(o) NAND pocket reference                                                       .
+!                                                                               .
+!	    +-----.                                             | A | B |   Y   |   .
+!	A---|      \  _                             __          +----+--+-------+   .
+!	    |       }(_)---Y      NAND          ---|  \o___     | 0 | 0 |  =1=  |   .
+!	B---|      /                            ---|__/         | 0 | 1 |  =1=  |   .
+!	    +-----'                                             | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |   0   |   .
+!                                                                               .
+!   if  ((A == 1) && (B == 1))  then  {Y=0}  else  {Y=1}                        .
+!                                        ^------------------ NOT                .
+!                                                                               .
+
+And the circuit looks like this:
+
+(o) NAND Circuit (3 transistors)                                                .
+!                                                                _____  ______  .
+!                   (A)         (B)                                             .
+!                    |           |                                              .
+!                  __V__       __V__                              AND           .
+!                  /   \       /   \                                            .
+!    [+V]-----+---'     `-----'     `-----(y)                                   .
+!                                          |                     _____          .
+!                                          |                             NAND   .
+!                                        __V__                                  .
+!                                        /   \                                  .
+!    [+V]---------------------------+---'     `---+-----[Gnd]     NOT           .
+!                                   |                                           .
+!                                   |            .-.                            .
+!                                   `-----------( Y )---[Gnd]                   .
+!                                                `-'             _____  ______  .
+!                                                                               .
+
+And with a little of that "NOT-gate lateral thinking" we did earlier, we can
+invert the Output by putting the Output Device "in parallel" with the gate
+
+...and therfore reduce the transistor count:
+
+(o) NAND Circuit (2 transistors)                                                .
+!                                                                               .
+!                   (A)         (A)                                             .
+!                    |           |                                              .
+!                  __V__       __V__                                            .
+!                  /   \       /   \                                            .
+!    [+V]-----+---'     `-----'     `-------------------[Gnd]                   .
+!             |                                                                 .
+!             |                                  .-.                            .
+!             `---------------------------------( Y )---[Gnd]                   .
+!                                                `-'                            .
+!                                                                               .
+
+
+~-~~  ,-----.    .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+~-~~ (  NOR  ) ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~ .
+~-~~  `-----'    `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  .
+
+That was easy ...let's repeat that for NOR
+
+Here is the OR truth table and the NOR / NOT-OR table
+	.----------------.	      .----------------.
+	|  OR   | OUTPUT |	      |  NOR  | OUTPUT |
+	| A | B |   Y    |	      | A | B |   Y    |
+	+----+--+--------+	      +----+--+--------+
+	| 0 | 0 |   0    |	      | 0 | 0 |  =1=   |
+	| 0 | 1 |  =1=   |	      | 0 | 1 |   0    |
+	| 1 | 0 |  =1=   |	      | 1 | 0 |   0    |
+	| 1 | 1 |  =1=   |	      | 1 | 1 |   0    |
+	'----------------'	      '----------------'
+
+The symbol is an OR with a NOT (tiny circle) after it
+
+(o) NOR pocket reference                                                        .
+!                                                                               .
+!	    +--._                                               | A | B |   Y   |   .
+!	A----\   `-.  _                             _           +----+--+-------+   .
+!	      }    ,'(_)---Y      NOR           ---\ `.o___     | 0 | 0 |   0   |   .
+!	B----/  _,'                             ---/_,'         | 0 | 1 |  =1=  |   .
+!	    +--'                                                | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!                                                                               .
+!   if  ((A == 1) || (B == 1))  then  {Y=0}  else  {Y=1}                        .
+!                                        ^------------------ NOT                .
+!                                                                               .
+
+Again, we just do an "OR", then pass that through a "NOT"
+
+(o) NOR Circuit (3 transistors)                                                 .
+!                                                                _____  ______  .
+!                         (B)                                                   .
+!                          |                                                    .
+!                        __V__                                                  .
+!                        /   \                                                  .
+!                   ,---'     `---.                                             .
+!                   |             |                               OR            .
+!                   |     (A)     |                                             .
+!                   |      |      |                                             .
+!                   |    __V__    |                                             .
+!                   |    /   \    |                                             .
+!    [+V]-----+-----+---'     `---+-------(y)                                   .
+!                                          |                     _____          .
+!                                          |                             NOR    .
+!                                        __V__                                  .
+!                                        /   \                                  .
+!    [+V]---------------------------+---'     `---+-----[Gnd]     NOT           .
+!                                   |                                           .
+!                                   |            .-.                            .
+!                                   `-----------( Y )---[Gnd]                   .
+!                                                `-'             _____  ______  .
+!                                                                               .
+
+Some of that lateral-thinking/parallel-wiring stuff,
+  to reduce the transistor count:
+
+(o) NOR Circuit (2 transistors)                                                 .
+!                                                                               .
+!                         (B)                                                   .
+!                          |                                                    .
+!                        __V__                                                  .
+!                        /   \                                                  .
+!                   ,---'     `---.                                             .
+!                   |             |                                             .
+!                   |     (A)     |                                             .
+!                   |      |      |                                             .
+!                   |    __V__    |                                             .
+!                   |    /   \    |                                             .
+!    [+V]-----+-----+---'     `---+---------------------[Gnd]                   .
+!             |                                                                 .
+!             |                                  .-.                            .
+!             `---------------------------------( Y )---[Gnd]                   .
+!                                                `-'                            .
+!                                                                               .
+
+
+~~~~ ,---------------.                                                          .
+~~~ (  Complex Gates  ) ========================================================.
+~~~~ `---------------'                                                          .
+
+There is nothing to stop you inventing any kind of "gate" circuit
+that your project may require.
+
+You can glue as many of these {IS, NOT, AND, NAND, OR, NOR} primitive gates
+together and build a "complex" gate.
+
+Question:
+	How would you build a:  THREE Input {AND} or {OR} gate?
+
+The most common "complex" gate, is the {XOR}...
+
+~-~~  ,-----.    .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+~-~~ (  XOR  ) ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~ .
+~-~~  `-----'    `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  .
+
+You may have noticed we did not cover the rather important "eXclusive OR" gate.
+
+The {XOR} (aka. {EOR}) gate is not immediately obvious.
+
+The output of an {XOR} is
+	True if (EXclusively) *either* {A} *OR* {B} is True, but *NOT BOTH*
+
+Here is it's logic table:
+	.----------------.
+	|  XOR  | OUTPUT |
+	| A | B |   Y    |
+	+----+--+--------+
+	| 0 | 0 |   0    |
+	| 0 | 1 |  =1=   |
+	| 1 | 0 |  =1=   |
+	| 1 | 1 |   0    |
+	'----------------'
+
+Its symbol is the OR symbol with an extra line behind it:
+
+(o) XOR pocket reference                                                        .
+!                                                                               .
+!	    . +--._                                             | A | B |   Y   |   .
+!	A----\ \   `-.                               _          +----+--+-------+   .
+!	      ) }    ,'---Y       XOR/EOR       ---\\ `.___     | 0 | 0 |   0   |   .
+!	B----/ /  _,'                           ---//_,'        | 0 | 1 |  =1=  |   .
+!	    ' +--'                                              | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |   0   |   .
+!                                                                               .
+!   if  ((A == 1) ^ (B == 1))  then  {Y=1}  else  {Y=0}                         .
+!                                                                               .
+
+Let's review some familiar Truth Tables:
+
+	 ,----- To help this explanation, I've numbered each row
+	 |
+	 |  .----------------.
+	 |  |  OR   | OUTPUT |
+	 V  | A | B |   Y    |
+	    +----+--+--------+
+	{0} | 0 | 0 |   0    |
+	    |   |   |        |
+	{1} | 0 | 1 |  =1=   | <--,
+	{2} | 1 | 0 |  =1=   | <--+-- OR  : Any one of these three
+	{3} | 1 | 1 |  =1=   | <--'
+	    '----------------'
+
+	    .----------------.
+	    |  NAND | OUTPUT |
+	    | A | B |   Y    |
+	    +----+--+--------+
+	{0} | 0 | 0 |  =1=   | <--,
+	{1} | 0 | 1 |  =1=   | <--+-- NAND: Any one of these three
+	{2} | 1 | 0 |  =1=   | <--'
+	    |   |   |        |
+	{3} | 1 | 1 |   0    |
+	    '----------------'
+
+	    .----------------.
+	    |  XOR  | OUTPUT |
+	    | A | B |   Y    |
+	    +----+--+--------+
+	{0} | 0 | 0 |   0    |
+	    |   |   |        |
+	{1} | 0 | 1 |  =1=   | <--,__ XOR  : Either of these two
+	{2} | 1 | 0 |  =1=   | <--'
+	    |   |   |        |
+	{3} | 1 | 1 |   0    |
+	    '----------------'
+
+So we can say:
+	If both  (A  OR  B) {   1, 2, 3}  is True
+	   AND   (A NAND B) {0, 1, 2   }  is also True
+	then we must have   {   1, 2   }  ... ie. an XOR
+
+(o) XOR circuit (explanatory)                                                   .
+! .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   . .
+!                                                                               .
+! .             (A)                   .                                       . .
+!                |                                                              .
+! .            __V__                  .                                       . .
+!              /   \                                  (B)        (A)            .
+! .       ,---'     `----------.      .                |          |           . .
+!         |                    |                     __V__      __V__           .
+! .       |            (B)     |      .              /   \      /   \         . .
+!  [+V]---+             |      +---.     [+V]---+---'     `----'     `---[Gnd]  .
+! .       |           __V__    |   |  .         |                             . .
+!         |           /   \    |   |            |                               .
+! .       `----------'     `---'   |  .         |                             . .
+!                                  |            |                               .
+! .                          OR    |  .         |   NAND                      . .
+!                                  |            |                               .
+! .  .  .  .  .  .  .  .  .  .  .  |  .  .  .  .| .  .  .  .  .  .  .  .  .   . .
+!                                  |            |                               .
+! .                               (a)          (b)                            . .
+!                                  |     AND    |                               .
+! .                              __V__        __V__                           . .
+!                                /   \        /   \              .-.            .
+! . [+V]--------------------+---'     `------'     `------------( Y )----[Gnd]. .
+!                                                                `-'            .
+! .                                                              XOR          . .
+!                                                                               .
+! .  .  .  .  .  .  .  .  .  .  .  .  .  . .  . .  .  .  .  .  .  .  .  .  .  . .
+
+There is a (hopefully) obvious was to reduce the transistor count here
+
+(o) XOR circuit (reduced transistor count)                                      .
+! .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   . .
+!                                                                               .
+! .             (A)              OR   .   NAND                                . .
+!                |                                                              .
+! .            __V__                  .                                       . .
+!              /   \                                  (B)        (A)            .
+! .       ,---'     `----------.      .                |          |           . .
+!         |                    |                     __V__      __V__           .
+! .       |            (B)     |      .              /   \      /   \         . .
+!  [+V]---+             |      +---+------------+---'     `----'     `---[Gnd]  .
+! .       |           __V__    |      .         |                             . .
+!         |           /   \    |                |                .-.            .
+! .       `----------'     `---'      .         `---------------( Y )----[Gnd]. .
+!                                                                `-'            .
+! .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   . .
+
+
+~-~~  ,------.    .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    .
+~-~~ (  XNOR  ) ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~  .
+~-~~  `------'    `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `    .
+
+Here is the logic/truth table for XNOR ...think of it as "neither or both"
+	.----------------.
+	|  XNOR | OUTPUT |
+	| A | B |   Y    |
+	+----+--+--------+
+	| 0 | 0 |  =1=   |
+	| 0 | 1 |   0    |
+	| 1 | 0 |   0    |
+	| 1 | 1 |  =1=   |
+	'----------------'
+
+Its symbol is the XOR symbol with a NOT after it
+
+!                                                                               .
+!	    . +--._                                             | A | B |   Y   |   .
+!	A----\ \   `-.  _                            _          +----+--+-------+   .
+!	      ) }    ,'(_)---Y    XNOR/ENOR     ---\\ `.o___    | 0 | 0 |  =1=  |   .
+!	B----/ /  _,'                           ---//_,'        | 0 | 1 |   0   |   .
+!	    ' +--'                                              | 1 | 0 |   0   |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!                                                                               .
+!   if  ((A == 1) ^ (B == 1))  then  {Y=0}  else  {Y=1}                         .
+!                                       ^------------^----- Observe             .
+!                                                                               .
+
+The circuit is ... Left as an exercise for the reader...
+
+
+~~~~ ,------------------------------------.                                     .
+~~~ (   We know how to make complex gates  ) ===================================.
+~~~~ `------------------------------------'                                     .
+
+
+(o) Nand pocket reference                                                       .
+!                                                                               .
+!	    +-----.                                             | A | B |   Y   |   .
+!	A---|      \  _                             __          +----+--+-------+   .
+!	    |       }(_)---Y      NAND          ---|  \o___     | 0 | 0 |  =1=  |   .
+!	B---|      /                            ---|__/         | 0 | 1 |  =1=  |   .
+!	    +-----'                                             | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |   0   |   .
+!                                                                               .
+!   if  ((A == 1) && (B == 1))  then  {Y=0}  else  {Y=1}                        .
+!                                        ^------------^----- Observe            .
+!                                                                               .
+
+(o) NOR pocket reference                                                        .
+!                                                                               .
+!	    +--._                                               | A | B |   Y   |   .
+!	A----\   `-.  _                             _           +----+--+-------+   .
+!	      }    ,'(_)---Y      NOR           ---\ `.o___     | 0 | 0 |   0   |   .
+!	B----/  _,'                             ---/_,'         | 0 | 1 |  =1=  |   .
+!	    +--'                                                | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!                                                                               .
+!   if  ((A == 1) || (B == 1))  then  {Y=0}  else  {Y=1}                        .
+!                                        ^------------^----- Observe            .
+!                                                                               .
+
+(o) XOR pocket reference                                                        .
+!                                                                               .
+!	    . +--._                                             | A | B |   Y   |   .
+!	A----\ \   `-.                               _          +----+--+-------+   .
+!	      ) }    ,'---Y       XOR/EOR       ---\\ `.___     | 0 | 0 |   0   |   .
+!	B----/ /  _,'                           ---//_,'        | 0 | 1 |  =1=  |   .
+!	    ' +--'                                              | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |   0   |   .
+!                                                                               .
+!   if  ((A ^ B) == 1)  then  {Y=1}  else  {Y=0}                                .
+!                                                                               .
+
+(o) XNOR pocket reference                                                       .
+!                                                                               .
+!                                                                               .
+!	    . +--._                                             | A | B |   Y   |   .
+!	A----\ \   `-.  _                            _          +----+--+-------+   .
+!	      ) }    ,'(_)---Y    XNOR/ENOR     ---\\ `.o___    | 0 | 0 |  =1=  |   .
+!	B----/ /  _,'                           ---//_,'        | 0 | 1 |   0   |   .
+!	    ' +--'                                              | 1 | 0 |   0   |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!                                                                               .
+!   if  ((A ^ B) == 1)  then  {Y=0}  else  {Y=1}                                .
+!                                ^------------^----- Observe                    .
+!                                                                               .
+
+
+
+
+
+
+~~~~ ,-----------------------.                                                  .
+~~~ (  Potentially confusing  ) ================================================.
+~~~~ `-----------------------'                                                  .
+
+"Voltage"?! ...Don't you mean "Voltage Potential"?
+
+{blahblahblah} "-" end of a battery {blahblahblah} Negative Pole {blahblahblah}
+"[Gnd]" {blahblahblah} ground plane {blahblahblah} literal 'stick in the ground'
+{blahblahblah} 0V {blahblahblah} Zero Volts {blahblahblah} Logic 0 {blahblah}
+"Negative" {blahblahblah} ...all essentially just different names for
+the same thing ...Enough said!
+https://www.allaboutcircuits.com/technical-articles/an-introduction-to-ground/
+
+Absolute zero volts can only be achieved at "Absolute Zero" temperature.
+(Human) physicists have never (publicly) managed this.
+
+Electricity people just:
+	# Stick the Black wire ("minus lead") somewhere and call that "zero"
+	# Stick the Red wire ("plus lead") somwehere else, and
+	  ...the multimeter tells me what the difference is between the two
+
+Consider two batteries connected end-to-end:
+!                                                                               .
+!        #------[(+) 3v battery (-)]----#----[(+) 2v battery (-)]------#        .
+!        |                              |                              |        .
+!       (A)                            (B)                            (C)       .
+!                                                                               .
+
+We connect the two leads of our multimeter (one black, one red)
+  to any two test-points {A, B, C}
+
+"Normal" people will:
+	# put the Black wire at {C}
+	# put the Red wire at {A}
+	# tell you the multimeter reads "+5 Volts"
+	  ie. The Red wire is "5 volts higher" then the Black one
+
+Others may:
+	# put the Black wire at {A} ...and use THAT as their reference point
+	# put the Red wire at {C}
+	# tell you that the multimeter reads "-5 Volts"
+	  ie. The Red wire is "5 volts lower" then the Black one
+
+There are SIX wiring combinations (excluding "A/A, B/B, C/C")
+
+    ,--------------------------.
+    | Black ||_______Red_______|
+    | /Ref. ||  A  |  B  |  C  |
+    |=======||=================|
+    |   A   ||  0  |  3  |  5  |
+    |   B   || -3  |  0  | +2  |
+    |   C   || -5  | -2  |  0  |
+    '--------------------------'
+
+So. We can say
+
+
+So. Electricity
+
+
+
+
+
+
+!                ___                      .-.                                   .
+!      [+V]-----[###]---------|>|--------( Y )------[Gnd]                       .
+!                            ---->        `-'                                   .
+!                                                                               .
+!                                          1 : Light is                         .
+!                                                                               .
+
+
+
+
+
+
+~-~ Floating Values ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ .
+
+If you do not connect {A} to either {+V} or {Gnd},
+...this is known as a "Floating" Input
+...and the output {Y} is "Undefined"
+
+NB. In Real Life, when {A} is "Floating", the value of the output {Y}
+    will depend on (generally uncontrollable) physical & environmental factors.
+
+    !!! In this guide, we will simply NEVER leave an INPUT Floating !!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Think of it as a stream with high banks.
+One side is called {Side 0}, the is called {Side 1}
+
+!                                                                               .
+!    ______{0}                  {1}__________                                   .
+!          --_                 _--                                              .
+!             --_..........._--                                                 .
+!                -.........-     <--- Water                                     .
+!                 \......./                                                     .
+!                  `-----'                                                      .
+!                                                                               .
+
+On both sides  there is      flat ground
+               there is also some dry slope
+and in between there is      water
+
+You need to make billions of billions of these stream quickly.
+And you will not be able to control potential rainfall, earthquakes, etc.
+
+Your customers need to know
+
+
+!    ______{0}                  {1}______                                       .
+!          |--_                 _--|                                            .
+!          |   --|...........|--   |                                            .
+!          |     |-.........-|     |                                            .
+!          |     | \......./ |     |                                            .
+!          |     |  `-----'  |     |                                            .
+!     Clean|Noisy|           |Noisy|Clean                                       .
+!       0  |  0  |           |  1  |  1                                         .
+!          |     |           |     |                                            .
+!                                                                               .
+
+If
+!                                                _                              .
+!                                              .' `.   - : light is OFF         .
+!                             ,---(Reading)---( -/+ )  + : light is ON          .
+!                           ,'                 `._.'                            .
+!               __V__      ;                                                    .
+!        (+)-----o o-------+-------(-)                                          .
+!                                                                               .
+
+###https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWcMBMcUHYMGZIA4UA2ATmIxAUgoqoQFMBaMMAKABcQAWPKzuLnl27gRDTtFKSpnYlwlEMZFMTxYsKbIzDkpIACZ0AZgEMArgBs2LAO5cwhIXi6FOjqDa7EHnYQhROfJ0gWACcKfzdCfDcqMDgPKIDhQhRXQPcAcxAU1wQwFGzUih8od1s-JKcKrn5ggCU7B2xCAPsQbDRS3louqGgEUIEqbGahkEwC2PiAZTGJub5ek3MAZzpSlBYszhdxxZ3XFCKqYNtuYZaxvhOWAA9nC94MAubsLnAnAEE7iji7WiOdjerjATgAmiwGjIHKleF5xtETjVqEiYAN7jJDoQHJQsbIQU5WBiEG8FM5SRheB8yuEAvxCAhvLUPNg8K5mk4GU1Lqd2mz2pdWbl8jShb8Ci5aCLeVyBZzGeL3PdsMRaJA0iSaORDq4AEKmQyGOghFj2AoYPw1Kh4NrXcb6IxmSwMcx0PQiVGwVhZNl062+Eo3MItP0gC0FO1TYIYnYfch5Qmq95FACSADkAAoAVQAKj8SE5mrJFE1nsnXAB5XPZvNnQQjbz1nk-TgIOnayn-d6gkDfe7YpCs8iELDtJMEkAQ2yyu0hq3uNDDvChufpVwAHWCfDeI4jHRAeH30NKHQA+mfIKfbv44vZTwhTzB4JAyFyUA+mKewF-TxhTwwED-CtTDYAAHECEjLTh90PPdJkgiN4Rtbx4RlKD913TwHF5WCuBgo9UI8ZD519edeU4NoOUaGIEiKPIJSKdJowoYgIBJVxCDAN4SW1cACgAcQAOz0FhWXaAoADEIFiZB+CYEAczoW4rCAA
+
+
+!                                    _                                          .
+!                                  .' `.                                        .
+!                 ,---------------( 0/1 )-------.                               .
+!                 |                `._.'        |                               .
+!       [+V]     (Y)     (A)                   ===                              .
+!        |        |       |                     = Gnd                           .
+!        |        |       |                                                     .
+!       :#:      :#:     :#:                                                    .
+!       :#:      :#:     :#:                                                    .
+!       :#:      :#:     :#:                                                    .
+!        |        |       |                                                     .
+!        |        |       |                                                     .
+!        |        |     __V__                                                   .
+!        `--------+------o o--------------------.                               .
+!                                               |                               .
+!                                              ===                              .
+!                                               = Gnd                           .
+!                                                                               .
+For this paper, we will assume all outputs, ultimately, lead to Gnd
+
+Yes, in the world of electronics (consider "charlieplexing") this can be false.
+But, this is about CPU design, and such phenomena are of no interest to us.
+
+!                                                             _                 .
+!                                                           .' `.               .
+!		                                                   ( 0/1 )-.            .
+!		                                                    `._.'  |            .
+!		                             (A)      (Y)----       |    |            .
+!		                              |        |              |  [Gnd]          .
+!		        _____               __V__      |                                .
+!      [+V]-----[###]----------------o o-------+------[Gnd]                     .
+!                                                                               .
+!                                  release ... 0                                .
+!                                   press  ... 1                                .
+!                                                                               .
+
+
+
+
+
+BUFFER
+!		                   |    |       |         |    |                        .
+!		                   |  [Gnd]     |         |  [Gnd]                      .
+!		        _____      |          __V__       |                             .
+!      [+V]-----[###]------+-----------o o--------+------[Gnd]                .
+!                                                 |        |                     .
+!                                                 |        |                     .
+!                        .' `.       ,     ,    .' `.      |                    .
+!		                ( 0/1 )-.    |_0/1_|   ( 0/1 )-----'                    .
+!		                 `._.'  |      \ /      `._.'  |                        .
+!                                                                               .
+!                                                                              .
+!                        ,-.                                                    .
+!                    ---( Y )---                                                .
+!                        `-'                                                    .
+!                                                                               .
+!                                                                               .
+!                                                                               .
+
+!                                                                               .
+!		                        \_0/1_/                                         .
+!		                          \ /                                           .
+!		                           |                                            .
+!		                           |          _                                 .
+!		        _____            __V__      .' `.                               .
+!      [+V]-----[###]----+--------o o------( 0/1 )-----[Gnd]                    .
+!                        |                  `._.'                               .
+!                        |         _                                            .
+!                        |       .' `.                                          .
+!                        `------( 0/1 )------                                   .
+!                                `._.'                                          .
+!                                                                               .
+
+!                                                                               .
+!		                        \_0/1_/                                         .
+!		                          \ /                                           .
+!		                           |                                            .
+!		                           |                                            .
+!		        _____            __V__                                          .
+!      [+V]-----[###]----+--------o o---------+--------[Gnd]                    .
+!                        |                    |                                 .
+!                        |         _          |                                 .
+!                        |       .' `.        |                                 .
+!                        `------( 0/1 )-------'                                 .
+!                                `._.'                                          .
+!                                                                               .
+!                                                                               .
+
+!                          _                      _                             .
+!                        .' `.       ,     ,    .' `.                           .
+!		                ( 0/1 )-.    |_0/1_|   ( 0/1 )-.                        .
+!		                 `._.'  |      \ /      `._.'  |                        .
+!		                   |    |       |         |    |                        .
+!		                   |  [Gnd]     |         |  [Gnd]                      .
+!		        _____      |          __V__       |                             .
+!      [+V]-----[###]------+-----------o o--------'--------[Gnd]                .
+!                                                                               .
+
+!                                                 _                             .
+!                                    ,     ,    .' `.                           .
+!		                             |_0/1_|   ( 0/1 )-.                        .
+!		                               \ /      `._.'  |                        .
+!		                                |         |    |                        .
+!		                                |         |  [Gnd]                      .
+!		        _____                 __V__       |                             .
+!      [+V]-----[###]------+-----------o o--------+--------[Gnd]                .
+!                                                                               .
+
+!                                                                 .
+!                                   ,     ,                                 .
+!		                            |_0/1_|                                .
+!		                              \ /                                  .
+!		                               |                                   .
+!		                               |                                        .
+!		        _____                __V__                                  .
+!      [+V]-----[###]-----------------o o-----                              .
+!                                                                              .
+
+NOT
+!                          _                     _                              .
+!                        .' `.      ,     ,    .' `.                            .
+!		                ( 0/1 )-.   |_0/1_|   ( 0/1 )-.                         .
+!		                 `._.'  |     \ /      `._.'  |                         .
+!		                   |    |      |         |    |                         .
+!		                   |  [Gnd]    |         |  [Gnd]                       .
+!		        _____      |          __V__      |                              .
+!      [+V]-----[###]------+-----------o o-------+--------[Gnd]                 .
+!                                                                               .
+
+For a random real-life example:
+	The datasheet for the ATmega328P (designed to run at 'about 5 Volts') says:
+
+		----------  --------------     -----------     -------------------
+		   Level        Formula        Calculation        Result
+		----------  --------------     -----------     -------------------
+
+		Low  {0}  :  <= 0.3 * Vcc  ...  0.3 * 5V  ...  0.0V <= Low  <= 1.5V
+
+		Undefined :  ............       ........       1.5V < Undef  < 3.5V
+
+		High {1}  :  >= 0.6 * Vcc  ...  0.7 * 5V  ...  3.5V <= High <= 5.0V
+
+
+
+
+
+https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWEBmaCCc7nLADl8ggGwBMB6RICkVVNCApgLRhgBQA7ipACwg9E+2SgL6RO-Cv0FUy0sWwBK4AOwiZYHn1FRdPerpowEbAE79cNYRZokVJXWHjiAyjZAli7kiTHgQAGYAhgA2AM4MuiRsAObyHr7xJJC4hmwAHhYq-LyS6DnZfHggAEJKkpQ+2lJg6A5GObQNxhmSfJ70uZ7I-OCp7Jk8CD2eEAIjCNp9UBLJqci4fAhqKIszXHNUK8T0K+Jcy5QLS9t7rSRgSPr5JERXYA7tfACCAHIAImxgpCAquQhyNSpAGpBwAEwYwQAriEAC5MEIMMH+ZqwdhxAgOEEgXAybFGVpaJDfHoIMDZb4iDx8ACSrwACgBVAAqrTu+QQuGyKmWVHQNCeIAA8iymazMghOVRist6BdesUAJoSQ6yVKCOWpfa-IjAuSWTUzTJcjnIBz8iDDK7gBwAcQAdmCzB58EkUvEaE5xJkLo9+R5kNUekVUgAdAAOADUJIRHt8UADVgouDxLB57N4vNrNscPO7VeJzH8lnINWrHHAJDwzQnHjWHlqVXJY+WG+sQKRqpRO1QiASuD2eFIDRV2yOh5QRzt2yo1tOe9PtchcjoyKkdNn3Tpyepk+5rKmrGttdWHG3sW2TzWW2SHC3tVP9TX8THci3c-fX0U5PpPXIl4m1jvseVZwLWOR-o2XDLkIgG5JeMaJnYd5IVmrQ4BSRA9As+SUr0iR0mK6GeB4ZIoIQpFTMU3ooEQlTUCgKzdAq-TlMguoJEIHG1PUegGKiJhxNYVTkZU7oEm4LaeEcSGJJ6gShBEUTOu+7HgchFbwOhRBjG+KjBpAhTTM8MYcTo5kyCeaY8PGh5Ju22I6NiL4HHIznbP+Kp1CA6ArIsqS+ZQ4gYqmPl+WmgVpMa6BIOgEXkj5BAKnajoqloYWUBg5pnNByTgLw9DeU4+jtmaNCRWV+UlSeUh1Ouw5SEuayRXZkU0cgKjZOg8Y4T5tQsSAJnmOxqT+bRqSzn4XqVpJHFAuNvxqfJwThJEtixOB+kyQ49jNGxaxbfZxaGI0SACehuA7T8yDeWo1rFAMKA2Tq2FkWoVLUeh2AdjyORIEQs74bSDIsqZE1rCNOpQSgeW4kIeVlie8Zw-w8aI2DOKhZDuCNTGCMlTZ3bVXjNAo7+OKWRIuDxsVpOhbT7ZaKNeL6pTKahWWkx8OjKbDqFE44rjGyJJFPEZaVeUVbkbVU2BTgZmW8v1FTNNwKNqsZtqitqziqviRI2vutrmtpXwKNcx2xPs8z2gc8TRZ5QzdyUAznqVsLZtSCJTiujVlCTaO81LhxdULTjQXnHIXoOB0+WQPdYZRip0tMSLexx60OPErwfDdRSvBGQ8IAOk6XABwz1MuwVDlFdXztVQSEoqEUkDLlQuL5d9IYgMqmQA9nmC-Pp4BOI81LCqKoODDpP1IMMPQA+u4+EaDIX9NX+Bu9VMzfDtjvV+X1fgpCQQwvCiLIhAqKQI9JA4D58okIPdRTIkrxvJ8BzeeHfJnik0Pe3-lsKuvtZiJB-llQWEdp75DUMGFQsC6IDRomSGgagsR5TugNdgyhbyLUykXY6DQSpnUMGgVo1AejdQIbFfq3cyhxDsodJheUJKBzMlIQ6y1FJrQ8M6AWY0BYBzdlpZQYtRZ9nFsQ-iZCTAHCLpFC2MtcrlRWC2GWsJwKEy0RofwYBoC1H5PoXE7IyREHQMwMAPQYDsmSPYZcxBcDEA6nHEAEJoRwjYJouy2ifG6KvtAVMlhWD6R5FhOimgzrQFMWafAvhOq6j-jQdxp9PGaMhqHDJKwIABOcJgEEahIBYEwFgcS0TqFDHDpAMgQwNBgRSWfLxo5Q4C1FiiQJ+AtCXHjpdLQAgtTlJ4suHGfxipV2SSfRpQA
+
+
+
+https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWEBmaCCc7nLADl8ggGwBMB6RICkVVNCApgLRhgBQA7iACwU9HcqZfoMhsATj1w1slbtJAkA7CSjh4YgMpSaJYjsUlRagGYBDADYBnBmpJsA5iMODuAxZFxqxADylKeSFdMQIDBPBAAITYAJR4+EiN4yjB0VRoabnpvKDQ2P15BPXogxQRkHnAvdgLysog3Cr1XKqhODy9kXEEEJUou0XaSTyo+qiJ6MbEuXv7u0cpZtr8SMCQs9EUidbBVIsEAQQA5ABE2MFIQJVKEYT6vW69VABMGcwBXCwAXJgsGZ-AORgkHYTgIqkeIFw7khGXyPG4SAuFQQYACFzkikEAEkjgAFACqABV4dtNghcAElL0qOhMliQAB5YmEkl+BAUqgRXr0VaVCIATXaS0hAl5XmmVyID2E0nFyyhSnJyFUdIg5XW4FUAHEAHbPdryXQqAx6ShiSTXHrCMVCCXqSXcFUoW48Z27CXC4SECHCD1tLikYKUIPjOGBpK8Shy5IBqFwWMx4jhq7zZMgUPpx0KWQGAZxp2qf2Q-2O50+rmqCuSpOy52w9rIUoV-PVxulf1ZGilxuu3Mt+aOhMVrtaz1cJuCFsd4SSivKKuus0KnDoogVLqbDGVJK41nwlVIPQQbBHhAtCK+FBESjFFBjPQVcLVWLXp5JZDS8BpHJZWgZXIEEcFBPxcEDbxGOFtHnfR5ySADzGsWxdAkF0q1A+cTW7DQDyIBpmyUJ9IDCVoDkbL83FcdxKLjSEaMhBsZmEBixkYhZ1BNcEOPSYCuLAYjVGhcIBO8eFKS3YjKDVDjNnCHV9S9aoRKWfisPbcIwFAlTNPNdTuJQDsdLjT8lJNGjVJ4vxPwgfjdnvCpbM1CIyK4GNWFAvijMlJR5lYL9Qz88d427fjBDci4goC0LgvAaLJSi0ooq-C0rkM0DbXc80HSGEZMFUYZqjwQYVjs-j0CeZANJBfkvAAHQABwANVQyd9IK-TsKvcTYr-aTWCdfl5INLh7lijyE0y2ixkmjKvPhDlCpIRZrlikhZNaIU-DJWL0CQal0VSLx9iZFliV490jKEsasrEC5VCta6pUK0CXjeMxPh+P4AQgADgRqRQ1nUNFFAIdRhh3QQjmOM4ZjGPL2NYQccsKtMJlipGuHa+Glnhq95HREE9hCRyaqiV92os8BuGErC1D-JBfryLgo30ksRLnDsRNzSmxC+NCUHmEd3BskAmG4aBMElzBuCVOVqpYNB0GuaRdlSagiB8hyE1eD5vjYPmjQF1wFHMwEFYwZWQWIMB8fXUXgRBQijFwJWNdROl1wJmgdfevW+YreGK0pkWmFQbgbfPPRMFIDklAgBXIA10hhnQNYVFT5QHRAH2Pv1gx4cN4OzbAWAk8SVhUQpcTqmgC4+nLiOPcpRgmCU723tzrhEdcd1kDGQs4xtkYB5tsznUlUeiZSGW9ncCeyEyPhJ9jCeitjVW5D4Vf5hZ7vnAnmfnGXgft6ojSd-H9o0TR9M0R-LMr6UanaSLCkeh-Ce+nla-6A-q+37tOAL+gCJ4AJLGAv+kgMQ9DRhcBMWZsp+DwMgckwtoTqg1oNEAephpAOYrA4BD8u7lEWLAiY9A0ZXguKkDMNC0TA2ThDE6RJ9xODvhCWBuAkgINupcaBYY8EPDRq9XWn1-iAkZiCK+qxN4pGdivf+pRzLUBgSmNYWlYEqIESlCus9hL6Bop1Fqrp0DPwrPgAC-F4BsGgq6K65jx6mEsDYOwwFcxcXcRcUScQTJQnLF+GMAF6ZAjyFZG8UJOR92jHhUm-1DwRM2KeKElxnwrmBkoOOAtNgZJaLufEZ0Jx2JzHYueekKAyFKIRXSzMEzlMCDQKpxkTFmJMX-CclTQKjkaRzQQdT8x1LLKqG+dkBmGmdI0yE3TDQKFMcbGguNFIgDqZM0CgyllowHlM5mCgLEGCunjREVxMmoipE-Jhe4zq1AqLgDA-BrkpNaHjUxESHilHQbE18LMuJfITEE7IjMgJOBot89wuAvFQT2dRHZjiaCIRcShSQhtZl7IUJ1OAekaK5kMeTYewtn6GLpv87weRJCtRou1AlVjkZGw6OxU+R81h6MHpAWCrp+L6AmJ6OI7K5DuALnPQl-5iVAS7iykMIxGU0E5W0KBKCqwdjlViSxOFtCaR-IkcIirUjpCcUhVxbConfiLIa6+3iqYSp-EPaolDBUM2FfCIet4Ig2y8eXD5SDPxHjoX3I8iRSZUMIOiHAVM1rgEquc-JJIu6KqMN2GN8Er6VSnODTSz8t5X2pjIFNmb1mD0Va1NVi4eLRrTdPXq1Sw1mOzR+cG88vEqm7GtfotbpFeKXjgIZg8lpThnO4Ns0a7INrDSMitG8UAppkbm+e7hY1ahnQmpBiQtzBs0tVVNEb9yLr7gDLcRgAiJD2I8h1ygnjOrIO+BorR2DcoXkasc3YbWZCJRkPIbD5Haq1PIIBN0bFzqKEkXYwsP66vhYoVCgGe1yRnX+NFE8xX83Uf0V0vMw0-iDoqkeZtxZS0lm4Cg4cbn21gJAaWng8C7D7qkV2Wcc5+z-Qh7t68sMSxw6Yog+G8BICYA7UjYKwUkEo5gaa2sO56w9SEPuRZw4nmpKTaISDE5zBsvxKsO8GSMhiMewi94ixkCQD60mLlwBaPMofbFxD0oSpIfzUBoEx2IfWWo6zwctE80UTTKTJo3OLu0+VRthHypPlIg6xTSyXaxRoQXBkRwNMOpQZsPzVNWBhaCxEaIfMIOOfo6wDsZsw4R24FHLAwwcD9DQAVqOfQrEUiIMwNu2dRNfDzoWrLLXQrdjy9AcOiJCsYGK5AUrKBys9cq3hRA0I6s0ca1feDdSHOjKgYxjO9Huj2isei1VjG+Jbd+SB5CYG31frcvInyxgxA3p2RNW9o0-lCpfUBHzXguFyPwFCUNqT-oUYCFw9Ee6-H0kvMe0NhFl3VSfoevJ+4u5ba-ZlridapJ+knQ9CeHall+jRyj6RfLSpLcoa2ygD1NJ2Sx9DttSO+BpCCqm3pfpCu0+p0m1K4Qc2k9Q6qUqirRldxzVTqmf42c0-R9UJngvFWrfZ34yyYaaQg5DdkwrG7Llhu2G9oNsmCAA89EgrI0YlpJb1+tZ1r4rUxVNzd21ITAVhrGG5Q1p3RKqvF73H8gS9uuNlT+ZbLWJewZm-oeztxG3gpN-Bym8MeaW4Bf7qSsCw+TvpcHRlHVwPJ+DmH9m2ULMpAirFNlufV5spEro2KyUCexRnLDuK5w+E3g0l+NEfpc8iN9mI76ISpFsKVEWXPeAAMF4VNQ3dmd6G-abEw5kLCCnGbs738hpfqcqEKg34BgVB-kFil595rBZNyWwQpKBdeF-gHn2voxxDfJGTWL5YYTnL92dX3NLuj+H+wNv4PJ+ckJoAN2L8x+sDe9u9j8qEbkkRJIqgMkZIsEcFgI8AJVi9uhsJaZbMUgED4C1Iu414k9fIgg1FD5g58DcDB4sDoo943NMDL8ZwvEctBhocFAaCqYvNq8ecmCOxCCMDzUlI-xl52tiCcDuCTUiCxAgA
+
+
+$ 1 0.000005 3.5993318835628396 50 5 50 5e-11
+w 544 464 576 464 0
+r 528 336 528 272 0 10000
+S 528 256 528 224 0 0 false 0 2
+g 512 224 512 208 0 0
+x 535 404 547 407 4 18 B
+R 544 224 544 192 0 0 40 5 0 0 0.5
+x 542 250 552 253 4 18 1
+x 501 251 511 254 4 18 0
+w 192 384 672 384 0
+w 192 576 656 576 0
+w 672 384 672 576 0
+x 199 409 249 412 4 24 AND
+162 800 528 864 528 2 default-led 1 0 0 0.01
+g 928 528 960 528 0 0
+x 493 163 565 166 4 24 INPUT
+x 755 587 853 590 4 24 OUTPUT
+x 606 518 618 521 4 18 Y
+w 672 528 736 528 0
+w 864 528 896 528 0
+x 975 532 997 535 4 12 Gnd
+w 528 272 528 256 0
+r 800 528 736 528 0 100
+w 480 352 480 128 0
+w 576 352 576 128 0
+w 720 496 720 560 0
+w 720 496 896 496 0
+w 896 496 896 560 0
+w 880 560 720 560 0
+w 528 336 528 384 0
+w 480 128 576 128 0
+w 480 352 560 352 0
+w 896 528 928 528 0
+w 352 352 432 352 0
+w 352 128 448 128 0
+w 400 336 400 384 0
+w 448 352 448 128 0
+w 352 352 352 128 0
+w 400 272 400 256 0
+x 365 163 437 166 4 24 INPUT
+x 373 251 383 254 4 18 0
+x 414 250 424 253 4 18 1
+R 416 224 416 192 0 0 40 5 0 0 0.5
+g 384 224 384 208 0 0
+S 400 256 400 224 0 0 false 0 2
+r 400 336 400 272 0 10000
+x 409 404 421 407 4 18 A
+w 416 464 512 464 0
+w 576 464 576 528 0
+w 576 528 672 528 0
+w 1536 464 1792 464 0
+g 1792 464 1824 464 0 0
+x 1839 468 1861 471 4 12 Gnd
+w 1488 464 1536 464 0
+w 1264 528 1536 528 0
+w 1264 464 1264 528 0
+w 1328 464 1424 464 0
+x 1321 404 1333 407 4 18 A
+w 1760 528 1792 528 0
+w 1744 560 1584 560 0
+w 1760 496 1760 560 0
+w 1584 496 1760 496 0
+w 1584 496 1584 560 0
+r 1664 528 1600 528 0 100
+w 1168 384 1168 576 0
+x 1172 490 1194 493 4 18 \pV
+r 1264 464 1168 464 0 100
+x 1839 532 1861 535 4 12 Gnd
+w 1728 528 1760 528 0
+w 1536 528 1600 528 0
+x 1518 518 1530 521 4 18 Y
+x 1619 587 1717 590 4 24 OUTPUT
+g 1792 528 1824 528 0 0
+162 1664 528 1728 528 2 default-led 1 0 0 0.01
+x 1175 409 1243 412 4 24 NAND
+w 1536 384 1536 576 0
+w 1168 576 1520 576 0
+w 1168 384 1536 384 0
+x 1447 404 1459 407 4 18 B
+R 1168 464 1104 464 0 0 40 5 0 0 0.5
+w 1456 464 1488 464 0
+w 1264 464 1296 464 0
+t 400 384 400 464 1 1 -4.999999947980001 -1.5970801219506785 100 default
+t 528 384 528 464 1 1 -1.5970801561487633 -0.001732489767519068 100 default
+t 1312 384 1312 464 1 1 -3.414542599625571 -1.0676220915729127 100 default
+t 1440 384 1440 464 1 1 -1.0676221151588798 1.1676221145906875e-8 100 default
+w 320 1024 512 1024 0
+w 544 1024 608 1024 0
+w 608 1088 608 1056 0
+w 416 1088 608 1088 0
+w 320 1088 352 1088 0
+w 320 1088 320 1056 0
+w 608 1056 608 1024 0
+w 320 1056 320 1024 0
+w 896 1152 928 1152 0
+w 880 1184 720 1184 0
+w 896 1120 896 1184 0
+w 720 1120 896 1120 0
+w 720 1120 720 1184 0
+r 800 1152 736 1152 0 100
+x 975 1156 997 1159 4 12 Gnd
+w 864 1152 896 1152 0
+w 672 1152 736 1152 0
+x 755 1211 853 1214 4 24 OUTPUT
+g 928 1152 960 1152 0 0
+162 800 1152 864 1152 2 default-led 1 0 0 0.01
+w 352 1088 384 1088 0
+w 640 1056 640 1152 0
+w 672 1152 640 1152 0
+r 288 1056 192 1056 0 100
+r 1312 336 1312 272 0 10000
+S 1312 256 1312 224 0 0 false 0 2
+g 1296 224 1296 208 0 0
+R 1328 224 1328 192 0 0 40 5 0 0 0.5
+x 1326 250 1336 253 4 18 1
+x 1285 251 1295 254 4 18 0
+x 1277 163 1349 166 4 24 INPUT
+w 1312 272 1312 256 0
+w 1264 352 1264 128 0
+w 1360 352 1360 128 0
+w 1312 336 1312 384 0
+w 1264 128 1360 128 0
+w 1264 352 1344 352 0
+w 1392 352 1472 352 0
+w 1392 128 1488 128 0
+w 1440 336 1440 384 0
+w 1488 352 1488 128 0
+w 1392 352 1392 128 0
+w 1440 272 1440 256 0
+x 1405 163 1477 166 4 24 INPUT
+x 1413 251 1423 254 4 18 0
+x 1454 250 1464 253 4 18 1
+R 1456 224 1456 192 0 0 40 5 0 0 0.5
+g 1424 224 1424 208 0 0
+S 1440 256 1440 224 0 0 false 0 2
+r 1440 336 1440 272 0 10000
+w 352 464 384 464 0
+R 192 464 128 464 0 0 40 5 0 0 0.5
+r 288 464 192 464 0 100
+w 192 384 192 576 0
+w 320 1056 288 1056 0
+w 192 944 192 1200 0
+R 192 1056 128 1056 0 0 40 5 0 0 0.5
+w 192 1200 656 1200 0
+r 528 896 528 832 0 10000
+S 528 816 528 784 0 0 false 0 2
+g 512 784 512 768 0 0
+R 544 784 544 752 0 0 40 5 0 0 0.5
+x 542 810 552 813 4 18 1
+x 501 811 511 814 4 18 0
+x 493 723 565 726 4 24 INPUT
+w 528 832 528 816 0
+w 480 912 480 688 0
+w 576 912 576 688 0
+w 528 896 528 944 0
+w 480 688 576 688 0
+w 480 912 560 912 0
+w 352 912 432 912 0
+w 352 688 448 688 0
+w 400 896 400 944 0
+w 448 912 448 688 0
+w 352 912 352 688 0
+w 400 832 400 816 0
+x 365 723 437 726 4 24 INPUT
+x 373 811 383 814 4 18 0
+x 414 810 424 813 4 18 1
+R 416 784 416 752 0 0 40 5 0 0 0.5
+g 384 784 384 768 0 0
+S 400 816 400 784 0 0 false 0 2
+r 400 896 400 832 0 10000
+w 192 944 672 944 0
+t 528 944 528 1024 1 1 -4.999999946964185 -0.009940818123719984 100 default
+t 400 944 400 1088 1 1 -4.999999946964185 -0.009940818123719984 100 default
+x 535 964 547 967 4 18 B
+x 202 973 238 976 4 24 OR
+x 409 964 421 967 4 18 A
+w 640 1056 608 1056 0
+w 672 1200 672 944 0
+w 1712 1200 1712 944 0
+w 1712 1056 1680 1056 0
+w 1680 1056 1648 1056 0
+x 1449 964 1461 967 4 18 A
+x 1242 973 1295 976 4 24 NOR
+x 1575 964 1587 967 4 18 B
+t 1440 944 1440 1088 1 1 -3.414542599320316 3.5145425976100586e-8 100 default
+t 1568 944 1568 1024 1 1 -3.414542599320316 3.5145425976100586e-8 100 default
+w 1232 944 1712 944 0
+r 1440 896 1440 832 0 10000
+S 1440 816 1440 784 0 0 false 0 2
+g 1424 784 1424 768 0 0
+R 1456 784 1456 752 0 0 40 5 0 0 0.5
+x 1454 810 1464 813 4 18 1
+x 1413 811 1423 814 4 18 0
+x 1405 723 1477 726 4 24 INPUT
+w 1440 832 1440 816 0
+w 1392 912 1392 688 0
+w 1488 912 1488 688 0
+w 1440 896 1440 944 0
+w 1392 688 1488 688 0
+w 1392 912 1472 912 0
+w 1520 912 1600 912 0
+w 1520 688 1616 688 0
+w 1568 896 1568 944 0
+w 1616 912 1616 688 0
+w 1520 912 1520 688 0
+w 1568 832 1568 816 0
+x 1533 723 1605 726 4 24 INPUT
+x 1541 811 1551 814 4 18 0
+x 1582 810 1592 813 4 18 1
+R 1584 784 1584 752 0 0 40 5 0 0 0.5
+g 1552 784 1552 768 0 0
+S 1568 816 1568 784 0 0 false 0 2
+r 1568 896 1568 832 0 10000
+w 1232 1200 1696 1200 0
+R 1232 1056 1168 1056 0 0 40 5 0 0 0.5
+w 1232 944 1232 1200 0
+w 1360 1056 1328 1056 0
+r 1328 1056 1232 1056 0 100
+w 1712 1152 1328 1152 0
+w 1328 1056 1328 1152 0
+w 1392 1088 1424 1088 0
+162 1840 1152 1904 1152 2 default-led 1 0 0 0.01
+g 1968 1152 2000 1152 0 0
+x 1795 1211 1893 1214 4 24 OUTPUT
+w 1712 1152 1776 1152 0
+w 1904 1152 1936 1152 0
+x 2015 1156 2037 1159 4 12 Gnd
+r 1840 1152 1776 1152 0 100
+w 1760 1120 1760 1184 0
+w 1760 1120 1936 1120 0
+w 1936 1120 1936 1184 0
+w 1920 1184 1760 1184 0
+w 1936 1152 1968 1152 0
+x 2031 1060 2053 1063 4 12 Gnd
+g 1984 1056 2016 1056 0 0
+w 1712 1056 1984 1056 0
+w 1360 1056 1360 1024 0
+w 1648 1056 1648 1024 0
+w 1360 1088 1360 1056 0
+w 1360 1088 1392 1088 0
+w 1456 1088 1648 1088 0
+w 1648 1088 1648 1056 0
+w 1584 1024 1648 1024 0
+w 1360 1024 1552 1024 0
+w 1408 -112 1440 -112 0
+w 1248 -192 1488 -192 0
+w 1248 0 1472 0 0
+w 1488 -192 1488 0 0
+x 1255 -167 1351 -164 4 24 BUFFER
+162 1616 -48 1680 -48 2 default-led 1 0 0 0.01
+g 1744 -48 1776 -48 0 0
+x 1571 11 1669 14 4 24 OUTPUT
+x 1470 -58 1482 -55 4 18 Y
+w 1488 -48 1552 -48 0
+w 1680 -48 1712 -48 0
+x 1791 -44 1813 -41 4 12 Gnd
+r 1616 -48 1552 -48 0 100
+w 1536 -80 1536 -16 0
+w 1536 -80 1712 -80 0
+w 1712 -80 1712 -16 0
+w 1696 -16 1536 -16 0
+w 1712 -48 1744 -48 0
+w 1344 -224 1424 -224 0
+w 1344 -448 1440 -448 0
+w 1392 -240 1392 -192 0
+w 1440 -224 1440 -448 0
+w 1344 -224 1344 -448 0
+w 1392 -304 1392 -320 0
+x 1357 -413 1429 -410 4 24 INPUT
+x 1365 -325 1375 -322 4 18 0
+x 1406 -326 1416 -323 4 18 1
+R 1408 -352 1408 -384 0 0 40 5 0 0 0.5
+g 1376 -352 1376 -368 0 0
+S 1392 -320 1392 -352 0 0 false 0 2
+r 1392 -240 1392 -304 0 10000
+x 1401 -172 1413 -169 4 18 A
+w 1344 -112 1344 -48 0
+w 1344 -48 1488 -48 0
+t 1392 -192 1392 -112 1 1 -4.999999947980001 -1.5970801219506785 100 default
+w 1344 -112 1376 -112 0
+R 1248 -112 1184 -112 0 0 40 5 0 0 0.5
+r 1344 -112 1248 -112 0 100
+w 1248 -192 1248 0 0
+w -16 64 2240 64 0
+w 1488 -112 1760 -112 0
+g 1760 -112 1792 -112 0 0
+x 1807 -108 1829 -105 4 12 Gnd
+w 1056 -496 1056 1184 0
+w 112 -512 112 1168 0
+w 288 464 352 464 0
+w 272 -112 336 -112 0
+w 176 -192 176 0 0
+r 272 -112 176 -112 0 100
+w 336 -112 368 -112 0
+t 512 -192 512 -112 1 1 -1.5970801561487633 -0.001732489767519068 100 default
+t 384 -192 384 -112 1 1 -4.999999947980001 -1.5970801219506785 100 default
+w 560 -48 656 -48 0
+w 560 -112 560 -48 0
+w 400 -112 496 -112 0
+x 393 -172 405 -169 4 18 A
+r 384 -240 384 -304 0 10000
+S 384 -320 384 -352 0 0 false 0 2
+g 368 -352 368 -368 0 0
+R 400 -352 400 -384 0 0 40 5 0 0 0.5
+x 398 -326 408 -323 4 18 1
+x 357 -325 367 -322 4 18 0
+x 349 -413 421 -410 4 24 INPUT
+w 384 -304 384 -320 0
+w 336 -224 336 -448 0
+w 432 -224 432 -448 0
+w 384 -240 384 -192 0
+w 336 -448 432 -448 0
+w 336 -224 416 -224 0
+w 880 -48 912 -48 0
+w 464 -224 544 -224 0
+w 464 -448 560 -448 0
+w 512 -240 512 -192 0
+w 864 -16 704 -16 0
+w 880 -80 880 -16 0
+w 704 -80 880 -80 0
+w 704 -80 704 -16 0
+w 560 -224 560 -448 0
+w 464 -224 464 -448 0
+r 784 -48 720 -48 0 100
+w 512 -304 512 -320 0
+x 959 -44 981 -41 4 12 Gnd
+w 848 -48 880 -48 0
+w 656 -48 720 -48 0
+x 590 -58 602 -55 4 18 Y
+x 739 11 837 14 4 24 OUTPUT
+x 477 -413 549 -410 4 24 INPUT
+g 912 -48 944 -48 0 0
+162 784 -48 848 -48 2 default-led 1 0 0 0.01
+x 183 -167 233 -164 4 24 AND
+w 656 -192 656 0 0
+w 176 0 640 0 0
+w 176 -192 656 -192 0
+x 485 -325 495 -322 4 18 0
+x 526 -326 536 -323 4 18 1
+R 528 -352 528 -384 0 0 40 5 0 0 0.5
+x 519 -172 531 -169 4 18 B
+g 496 -352 496 -368 0 0
+S 512 -320 512 -352 0 0 false 0 2
+r 512 -240 512 -304 0 10000
+w 528 -112 560 -112 0
+R 176 -112 128 -112 0 0 40 5 0 0 0.5
+
+
+The circuit is less than obvious...
+
+There are some unexpected solutions to this puzzle.
+
+This solves the puzzle in TWO transistors.
+But it is neither "clear" NOR "explanatory".
+
+(o) XOR Circuit (2 transistors)                                                 .
+!                        :                                                      .
+!           [+V]  [Gnd]  : [+V]  [Gnd]                                          .
+!             |     |    :   |     |                                            .
+!             |     |    :   |     |                                            .
+!             o\    o    :   o\    o                                            .
+!             1 \   0    :   1 \   0                                            .
+!                o       :      o                                               .
+!                |       :      |                                               .
+!		[+V]    (A)      :      |                                               .
+!		 |       |              |                                               .
+!		 |       |              |                                               .
+!		 |       +--------------{-------.                                       .
+!		 |       |              |       |                                       .
+!		 |       |             (B)      |                                       .
+!		 |     __|__            |       |                                       .
+!		 |     /   \            |       |                                       .
+!		 +----'     `-----------+       |                                       .
+!		 |                      |       |                                       .
+!		 |                    __|__     |                                       .
+!	     |    ,-.             /   \     |                                       .
+!	     `---( Y )-----------'     `----'                                       .
+!             `-'                                                               .
+!                                                                               .
+
+Here is a simulation:
+https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWcMBMcUHYMGZIA4UA2ATmIxAUgpABZsKBTAWjDACgAXcQq3G73ghTgRMbKxSTsGPPkhFi9GCSLZsxPMQR5CQjcioATBgDMAhgFcANh04gUePCGx5+DpzTCEREJmLxgnl6slIREkDTeftAqhGoaWjp6TmBwIMbm1rYA7uAY3thC9o7ORZBsue6lwlWYwuW5gfyFwk20XlAV4A7t3nW9nY08zhHO2AWjDSP8ngXjA+UA5s6u3U4u-F5U22wAygL2GK3DaE5UEOZWAM4MUPZ7xU79tfh3VJc3dyhdYPngYK0-qdBnlvBJpv96l0+JCIcCpm1gW0AWcfjRNj1+iiQc9XlielN8etVtjygAPbr0KTgeaSbxufjk+w0Yj2FAQIg1FAzZmdClgPBUyTgYh9FBIBngNgU8RuFD0bCYNn03nsfkIehgYibEgi8iSgCC0uK530KFF9kgEElACEfn9wTQUgCQU7YW7ZiC1PSOt6IeUAEq0Dwh5z1O40KhIbZQaAIH4nI4HGHlABOwYzbvB5zgXSqLUeK0ZPx6nranvKAutHg62IrI1QCBwmgwNEw4gM3W20EZPbYQA
+!                                                                               .
+!	              . +--._                                                       .
+!	  A ----+------\ \   `-. (H.SUM)      . +--._                               .
+!	        |       ) }    ,'--+-----------\ \   `-.                            .
+!	  B ----}--+---/ /  _,'    |            ) }    ,'-------- SUM               .
+!	        |  |  ' +--'       |      #====/ /  _,'                             .
+!	        |  |               |      H   ' +--'                                .
+!	C.in ==={=={==============={======X                                         .
+!	        |  |               |      H    +-----.                              .
+!	        |  |               |      #====|C.in  \      +--._                  .
+!	        |  |               |           |       }------\   `-.               .
+!	        |  |               `-----------|H.SUM /        }    ,'=== C.out     .
+!	        |  |   +-----.                 +-----'    ,---/  _,'                .
+!	        `--{---|A     \                          /   +--'                   .
+!	           |   |       }------------------------'                           .
+!	           `---|B     / (H.CARRY)                                           .
+!	               +-----'                                                      .
+!                                                                               .
+
+(o) A Full Adder (using two Half Adders)                                        .
+!                                                                               .
+!              A B   C.in                                                       .
+!             _|_|_  |                                                          .
+!            | A B | |                                                          .
+!       .----<C    | |                                                          .
+!       |    |__S__| |                                                          .
+!       |       |    |                                                          .
+!       |       | .--'                                                          .
+!       |      _|_|_                                                            .
+!       |     | A B |                                                           .
+!       | ,---<C    |                                                           .
+!       | |   |__S__|                                                           .
+!      \V|V/     |                                                              .
+!       \ /      |                                                              .
+!        |       |                                                              .
+!        |       |                                                              .
+!      C.out    SUM                                                             .
+!                                                                               .
+!                                                                               .
+!                                                                               .
+!                   .--------------------Half.Carry       <--.                  .
+!                   |                                        |                  .
+!         ,-----.   |         ,-----.                        |                  .
+!    A --->A   C>---'  ,------>A   C>----Half.Carry       <--+                  .
+!         |  Σ  |      |      |  Σ  |                        |                  .
+!    B --->B   S>------'  ,--->B   S>---------SUM            |                  .
+!         `-----'         |   `-----'                        |                  .
+!                         |                                  |                  .
+!    Carry.In-------------'                    ^             |                  .
+!                                              |             |                  .
+                                               |             |
+!                                                                               .
+!                   .--------------------Half.Carry       <--.                  .
+!                   |                                        |                  .
+!         ,-----.   |         ,-----.                        |                  .
+!    A --->A   C>---'  ,------>A   C>----Half.Carry       <--+                  .
+!         |  Σ  |      |      |  Σ  |                        |                  .
+!    B --->B   S>------'  ,--->B   S>---------SUM            |                  .
+!         `-----'         |   `-----'                        |                  .
+!                         |                                  |                  .
+!    Carry.In-------------'                    ^             |                  .
+!                                              |             |                  .
+                                               |             |
+!                                                                               .
+!                   .--------------------Half.Carry       <--.                  .
+!                   |                                        |                  .
+!         ,-----.   |         ,-----.                        |                  .
+!    A --->A   C>---'  ,------>A   C>----Half.Carry       <--+                  .
+!         |  Σ  |      |      |  Σ  |                        |                  .
+!    B --->B   S>------'  ,--->B   S>---------SUM            |                  .
+!         `-----'         |   `-----'                        |                  .
+!                         |                                  |                  .
+!    Carry.In-------------'                    ^             |                  .
+!                                              |             |                  .
+
+~-~ Why Bother ? ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~.
+
+Let's look more closely at this.
+
+We either have a "1" coming in ... and a "1" going out
+            or a "0" coming in ... and a "0" going out
+
+Why bother with the "BUFFER" at all?
+
+Because, in the real world, signals fade, and/or pick up inteference.
+
+Each transistor can (and generally does) effectively "clean up" the signal
+
+It can convert a "Weak"/"Dirty"[*] INcoming signal
+         in to a "Strong"/"Clean"  OUTgoing signal
+
+[*] "Dirty" aka "Noisy", "Faded", "Corrupt"
+
+One demonstrative example would be to use this as a "Signal Repeater"
+
+If the incoming signal is "Noisy 0" zone ,
+...the transistor in the "BUFFER" will output a clean "0"
+
+If the incoming signal is "somwhere in" the "1" zone ,
+...the transistor in the "BUFFER" will output a clean "1"
+
+All these parameters {Clean, Dirty, Weak, Strong, 0, 1} can be controlled by
+careful selection of the components chosen for the real-life circuit.
+
+There is MUCH debate as to whether we should describe Transistors in terms of:
+	# Current .. popular with Electronics Engineers
+	# Voltage .. popular with Physicists
+
+https://electronics.stackexchange.com/questions/71144/is-bjt-a-voltage-controlled-device-or-current-controlled-device
+
+
+~~~~ ,--------------------.                                                     <
+~~~ (  If I May Interject  ) ===================================================<
+~~~~ `--------------------'                                                     <
+
+I sincerely apologise to all the physicists that are about to start crying.
+
+I know you want to hear words like:
+	"doping", and "electron holes", and "depletion layers"
+
+Don't worry. The engineers are screaming:
+	"BJT" not "MOSFET" ?!
+...and fuming that my "BJT"s are neither "NPN" nor "PNP".
+...Despite knowing they would have to be NPN to make the circuits work!
+
+I will also not be using words like:
+	"N Channel" and "P Channel",
+	"Enhancememt" or "Depletion"
+
+I will not be explaining "how to make a transistor out of two diodes".
+And I will not be discussing the concept of a "Band Gap"
+
+No mention will be made that actually "electrons flow from (-) to (+)"
+and therfore almost "every component symbol, schematic, and simulator is wrong!"
+
+We're doing Electronic Logic Design, not sub-atomic physics!
+
+However, enjoy the [above] list of technical terms to feed in to "The Google".
+
+Also... No, it's NOT a lack of ASCII Art Skillz!
+
+(o) BJTs                                                                        .
+!                                                                               .
+!              B                         B                                      .
+!              |                         |                ______                .
+!              |                         |               | Note |               .
+!            __|__                     __|__             +------+------------.  .
+!         .-'  |  `-.               .-'  |  `-.          | Positive          |  .
+!       ,'     |     `.           ,'     |     `.        |    |              |  .
+!      ;       |       :         ;       |       :       |    |              |  .
+!     :        |        :       :        |        :      |   (+) -->-- (-)   |  .
+!     |   -----------   |       |   -----------   |      |              |    |  .
+!     :     /  n  \_    :       :     /  p  \     :      |              |    |  .
+!      :   /      |\   ;         :   /      _\|  ;       |          Negative |  .
+!       `./p       p\.'           `./n       n\.'        +-------------------+  .
+!        /`-._____,-'\             /`-._____,-'\         | The arrow points  |  .
+!       /             \           /             \        |  toward the N     |  .
+!      C               E         C               E       `-------------------'  .
+!             PNP                       NPN                                     .
+!                                                                               .
+
+(o) Example MOSFETs                                                             .
+!                                                                               .
+!         G                              G1  G2                                 .
+!         |                              |   |                                  .
+!         |  _____                       |___|_                                 .
+!         |-'     `-.                  _-|   | `-.                              .
+!       ,'|          `.              ,'  |   |    `.                            .
+!      ;  |_________   :            ;    |__ |__    :                           .
+!     :   ___ ___ ___   :          :   ___________   :                          .
+!     |    |   ^n  |    |          |    |   |p  |    |                          .
+!     :    |   |   |    :          :    |   |   |    :                          .
+!      :   |   |   |   ;            :   |   v   |   ;                           .
+!  S ----------'   `------ D    S ----------'   `------ D                       .
+!         `-._____,-'                  `-._____,-'                              .
+!                                                                               .
+!          N-Channel                    P-Channel                               .
+!                                       Depletion                               .
+!                                                                               .
+
+(o) Example Silicon MOSFET                                                      .
+!                                                          ,----------------.   .
+!            Source       Gate       Drain                ( On-die, Silicon, )  .
+!               |          |           |                  ( ?-Channel MOSFET )  .
+!               |          |           |                   `----------------'   .
+!               |    $$$$$$$$$$$$$$    |                                        .
+!          |== $$$ ================== $$$ ==<------ Insulator                   .
+!          |oooooooooo............oooooooo<-------- N/P region                  .
+!          |oooooooooo............oooooooooo|                                   .
+!          |................................|                                   .
+!          |........,--------------........<------- Channel region              .
+!          |.....,-'                `-......|                                   .
+!          |....|       ________       |<----------- Depletion layer            .
+!          |....|      |########|    <-------------- P/N Substrate              .
+!          +----+------+---|----+------+----+                                   .
+!                          |                                                    .
+!                         Body                                                  .
+!                                                                               .
+
+
+~-~ Draw Me a Picture, ASCII Boy ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~.
+
+We are NEITHER Electronics Engineers, nor are we Physicists.
+
+We ARE Logic Designers. And, as such,
+	the following explanation is "GOOD ENOUGH"
+
+If we think of our "Signal" as having a "Strength" in the range {0..25} [**]
+
+	# When the Strength is 25, this is a  "Clean" {1}
+	# When it's   "ALMOST" 25, this is a  "Noisy" {1}
+    :
+	# When it's   "ALMOST"  0, this is a  "Noisy" {0}
+	# When the Strength is  0, this is a  "Clean" {0}
+
+[**] The real range is (to all intents) /infinitely/ finer that this.
+     (...and infinite space is tricky to draw with ASCII Art)
+
+We can safely assume that a Strength of:
+	# 23 or 24 is certainly a {1} that's faded a bit
+	#  1 or 2  is certainly a {0} that's picked up some noise
+
+...So where is the point where it changes between a {0} and a {1} ?
+
+The actual number will vary wildly based on the rest of the circuit.
+
+There *IS* an exact-line in this "Undefined" zone, but
+	if this transistor is 1 atom bigger           ...the line moves
+	if it gets warm                               ...the line moves
+	if the voltage fluctuates a bit               ...the line moves
+	if someone shines a torch on it               ...the line moves [*]
+	if you play really loud music at it           ...the line moves [*]
+	if the neighbour turns on the washing machine ...the line moves [*]
+
+[*] No, the last few are NOT a joke!
+
+So the manufacturer picks some numbers that they think are safe.
+
+For our ASCII transistor, I have picked :-
+
+	Strength 24..25 ... Clean 1
+	Strength 16..23 ... Noisy 1
+
+	Strength 11..15 ... Undefined
+
+	Strength  2..10 ... Noisy 0
+	Strength  0.. 1 ... Clean 0
+
+(o) A picture of 1's and 0's                                                    .
+!       ___                                                             ___     .
+!      : 1   |     |   |     |   |     |   |     |   |     |   |#####|   1 :    .
+!      :___  |     | _ |     | _ |     | __|     |__ |#####| _ |#####|  ___:    .
+!       ___  |     | _ |     | _ |     | __|#####|__ |#####| _ |#####|  ___     .
+!      :     |     |   |     |   |#####|   |#####|   |#####|   |#####|     :    .
+!      : 0   |     |   |#####|   |#####|   |#####|   |#####|   |#####|   0 :    .
+!       ---  `-----'   `-----'   `-----'   `-----'   `-----'   `-----'  ---     .
+!               0         0         0         ?         1         1             .
+!                                                                               .
+
+(o) A "BUFFER" will ensure all 0's are 'clean'                                  .
+!       ___                                                                     .
+!      : 1   |     |   |     |   |     |                |     |                 .
+!      :___  |     | _ |     | _ |     |                |     |                 .
+!       ___  |     | _ |     | _ |     |     ---|>---   |     |                 .
+!      :     |     |   |     |   | ### |                |     |                 .
+!      : 0   |     |   |#####|   |#####|     (buffer)   |     |                 .
+!       ---  `-----'   `-----'   `-----'                `-----'                 .
+!               0         0         0                      0                    .
+!             Clean     Noisy     Noisy                  Clean                  .
+!                                                                               .
+
+(o) A "BUFFER" will ensure all 1's are 'clean'                                  .
+!       ___                                                                     .
+!      : 1   |     |   |#####|                          |#####|                 .
+!      :___  |  #  | _ |#####|                          |#####|                 .
+!       ___  |#####| _ |#####|               ---|>---   |#####|                 .
+!      :     |#####|   |#####|                          |#####|                 .
+!      : 0   |#####|   |#####|                          |#####|                 .
+!       ---  `-----'   `-----'                          `-----'                 .
+!               1         1                                1                    .
+!             Noisy     Clean                            Clean                  .
+!                                                                               .
+
+(o) A "BUFFER" will (seemingly) guess {1/0} for levels in the 'Undefined' zone  .
+!       ___                                                                     .
+!      : 1   |     |   |     |   |     |                |     |    |#####|      .
+!      :___  |     | _ |     | _ |     | _              |     |    |#####|      .
+!       ___  |  #  | _ | ### | _ |#####| _   ---|>---   |     | ?? |#####|      .
+!      :     |#####|   |#####|   |#####|                |     |    |#####|      .
+!      : 0   |#####|   |#####|   |#####|                |     |    |#####|      .
+!       ---  `-----'   `-----'   `-----'                `-----'    `-----'      .
+!               ?         ?         ?           Either     0    or    1         .
+!                                                        Clean      Clean       .
+!                                                                               .
+
+If you go back to the Simulation, you can see:
+	The 'SLOW moving dots' is the "dirty 1" Input
+	The 'FAST moving dots' is the "clean 1" Output
+
+https://www.falstad.com/circuit/circuitjs.html?ctz=CQAgjCAMB0l3BWEBmaCCc7nLADl8ggGwBMB6RICyVVkVApgLRhgBQALiACy73dhKvfr3BiYpdN3QIA7N2IISkdCXRRoRedK1gSJZLLAJcETJhAATBgDMAhgFcANhzYB3HshI9R3Itx9cKHceCkCqIhEgyDYAJRRlcLIg7lF6fnokdI0ENgAnHj4UZCEikllvemUYgGVCquJ6kH0A+gh7JwBnBihmtgBzHn9mkgC-AOVo4IAPQtkeSDGLbkh5gLwQAEE40MoW3fBVXozabJhc2ekJhEzF5uoecCD2S4eSBAg-Gnexp+CPQjeZC4ALEejA1ohQEHBCpA4xDxglAgiL8MIxWYlDIpAw8ViPUYgABCDhsNgYeTYgm8sjuqSCsiIKVE3ms9mcHCYTgYlnEx1g7EGBG89JAIOZUwxPiQghoH3mgiEzQCAEkAHIABQAqgAVNizIikPEMyI8EifZUgADyuu1etmsP4hioSh8-D+AE0QpEJSB-FFgsp5v7wiGSikQAAdGIrGikAJeeiyFEQ3rmgD6XnTkHT0zIYEggnTCGzsHg6EZxHe6ZY6bAdfTshrcm9hMTIGTCcSCL9bZRjKCqZ78YS9BHQ5CndHHZTKJ7A-CfADUpBIoqYuG3FkSHW3gA4gA7Sz5Twi0Th8JtOD6lCNLcJ5M8WRrP6RgAOADUQsI8aVwXPvzKdcf3eSge2hVNoR0YIClpMZRBDUUrx7bgvFvEU0L0aIQiUQdXVw8AyH+P1IEHO4fSaYdSJQO4lxoyEPDo5BaLgSjJxRH8KJ-cCmXCKC0ihV1RXbJDAPBEomgnRFTVFLiBI8VDvCwqgiOUlC0OhD4gVdHs6NFYVLzYYFmggAAxCA2nAeAQBYEAdQYaZXCAA
+
+~-~ Give Me An Example ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~  .
+
+If we put a Clean {1} in to a wire, it will eventually start to fade
+
+(o) This exmaple wire is causing the Signal Strenth to fade by 6, every 50m     .
+!                                                                               .
+!              |<-- 50m --->|                                                   .
+!              |<------------- 100m------->|                                    .
+!              |<----------------------------150m------->|                      .
+!              |<------------------------------------------ 200m ----->|        .
+!   ___                                                                         .
+!  : 1   |#####|       |     |       |     |       |     |       |     |        .
+!  :___  |#####|  50m  | ####|  50m  |     |  50m  |     |  50m  |     |        .
+!   ___  |#####|=======|#####|=======|  ###|=======|     |=======|     |        .
+!  :     |#####|       |#####|       |#####|       |   ##|       |     |        .
+!  : 0   |#####|       |#####|       |#####|       |#####|       |    #|        .
+!   ---  `-----'       `-----'       `-----'       `-----'       `-----'        .
+~-~                                                                             .
+!           1             1             ?             0             0           .
+!         Clean   ===   Noisy   ===    ???    ===   Noisy   ===   Noisy         .
+!                                                                               .
+                                        ^             ^
+                                        |             `-------------.
+                                        `------------------------.  |
+By the time we've travelled  100m  the {1} is : probably lost ---'  |
+																	|
+By the time we've travelled  150m  the {1} is : gone forver --------'
+
+(o) We can fix this with BUFFERs                                                .
+!                                                                               .
+!              |<-- 50m --->|                                                   .
+!              |<------------- 100m --------------->|                           .
+!              |<------------------------------------- 150m --------------->|   .
+!   ___                                                                         .
+!  : 1   |#####|      |     |    |#####|      |     |    |#####|      |     |   .
+!  :___  |#####| 50m  | ####|    |#####| 50m  | ####|    |#####| 50m  | ####|   .
+!   ___  |#####|======|#####|-|>-|#####|======|#####|-|>-|#####|======|#####|===.
+!  :     |#####|      |#####|    |#####|      |#####|    |#####|      |#####|   .
+!  : 0   |#####|      |#####|    |#####|      |#####|    |#####|      |#####|   .
+!   ---  `-----'      `-----'    `-----'      `-----'    `-----'      `-----'   .
+~-~                                                                             .
+!           1            1          1            1          1            1      .
+!         Clean  ===   Noisy  |>  Clean  ===   Noisy  |>  Clean  ===   Noisy    .
+!                                                                               .
+
+If we put a BUFFER every (eg.) 50m we can send the signal as far as we like.
+
+Using a BUFFER in this was is commonly known as a "Signal Repeater"
+
+~-~ ^H^H^H^H^H^H^H^H^H ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~  <
+
+As a Logic Designer, you now know everything you need to know about transistos.
+And youhave lots of "buzzwords" you can google, if you want to dig deeper :)
+
+The Physicists will carry on complaining - it is their "raison d'etre" <sic>
+
+The Engineers will say "I'd have explained it <this> way.  But OK, I get you."
+
+YOU (yes you) do not need to remember any of that...
+This is your take-away...
+
+# Starting with only the knowledge of a basic light switch cicuit, you have:
+	# inferred the same circuit with a transitor
+	# learned about "current limiting" resistors
+	# appreciate about Singal Inteference and Signal Loss
+	# understand what a Signal Repeater is
+
+		...AND, What's More Than That...
+
+	With only ONE transistor    (and a couple of "current limiting" resistors)
+
+		YOU HAVE MADE YOUR FIRST LOGIC GATE  :  The "BUFFFER"
+
+ !!!             v-THIS-v      is the ONLY thing you NEED to remember       !!!
+!                                                                               .
+!                     (A)                                                       .
+!                      |                                                        .
+!		             __V__                                                      .
+!		             /   \       .-.                                            .
+!      [+V]-----+---'     `-----( Y )------[Gnd]                                .
+!                                `-'                                            .
+!                                                                               .
+ !!!             ^-THIS-^      is the ONLY thing you NEED to remember       !!!
+
+
+
+~-~		~~~~ ,----------------------------.                                             <
+~-~		~~~ (  Never do only Half the Job  ) ===========================================<
+~-~		~~~~ `----------------------------'                                             <
+~-~
+~-~		Hopefully you have spotted that a FULL adder can be used as a HALF adder
+~-~		...like this:
+~-~
+~-~		(o) Using a Full Adder as a Half Adder                                          .
+~-~		!                                                                               .
+~-~		!		   _|_|_                                                                .
+~-~		!		  | A B |        If Carry.In is always 0                                .
+~-~		!		--<C   c<---0       then your full-adder will act like a half-adder     .
+~-~		!		  |__S__|                                                               .
+~-~		!		     |                                                                  .
+~-~		!                                                                               .
+~-~
+~-~		Why would we EVER care to do this?
+~-~
+~-~		I proffer this contrived, but explanatory, scenario:
+~-~
+~-~			# I want you to make me a solitary 100-bit Full Adder.
+~-~
+~-~			# To do this, you will need 100 Adders.
+~-~				# You've decided the first Adder only needs to be a HALF ADDER
+~-~				  ...because it's first ...there will never be anything to carry-in
+~-~
+~-~			# You go to chipsupplier.example.com and find these (very fictional) prices:
+~-~
+~-~				              | < 100 | >=100 | <-- order quantity
+~-~				  -----------------------------
+~-~				# Half adders |  10p  |   5p  |
+~-~				# Full adders |  30p  |  20p  |
+~-~
+~-~			? Do you buy:
+~-~				a) ( 99 Full @ 30p) + (1 Half @ 10p)  ==  2970 + 10  ==  £29.80
+~-~				b) (100 Full @ 20p)                   ==  2000       ==  £20.00
+~-~				   ...and just connect the first "Carry-In" to {Gnd}
+~-~
+~-~			ie. Do you want to save 33% on the manufacturing £cost of the product
+~-~
+~-~		I then tell you, I may one day wish to stick two or three of these together
+~-~		to make a 200-bit or 300-bit Adder
+
+!                                                                               .
+!         User  +1                                                              .
+!	         |  |                                                               .
+!	      ,--M--M--.                                                            .
+!	      |  A  B  |                                                            .
+!	Cout--<Co  4 Ci<--Cin                                                       .
+!	      |    S   |                                                            .
+!	      `----M---'                                                            .
+!	           |                                                                .
+!            result                                                             .
+!                                                                               .
+
+The assertion "B=0001" is fixed inside the chip
+
+Let's show that by moving the "+1" inside the symbol
+
+!                                                                               .
+!	         |                                                                  .
+!	      ,--M--#--.                                                            .
+!	      |  A  +1 |          # : No external connection                        .
+!	Cout--<Co  4 Ci<--Cin                                                       .
+!	      |    S   |                                                            .
+!	      `----M---'                                                            .
+!	           |                                                                .
+!                                                                               .
+
+We don't need Carry-in, so we will
+  move it inside the chip, and tie it to "0"/{Gnd}
+
+!                                                                               .
+!	         |                                                                  .
+!	      ,--M--#--.                                                            .
+!	      |  A  +1 |                                                            .
+!	Cout--<Co  4  0#          # : No external connection                        .
+!	      |    S   |                                                            .
+!	      `----M---'                                                            .
+!	           |                                                                .
+!                                                                               .
+
+Make the Symbol smaller (cos that's the point of symbols)
+
+!                                                                               .
+!	         |                                                                  .
+!	      ,--M--.                                                               .
+!	      !  A+1|   <-- outputs A+1                                             .
+!	      <C 4  |   <-- 4 bit bus                                               .
+!	      !  S  |                                                               .
+!	      `--M--'                                                               .
+!	         |                                                                  .
+!                                                                               .
+
+~-~~ ,----------------------------.    .  .  .  .  .  .  .  .  .  .  .  .  .    <
+~-~ (  There's Always Another Way  ) ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~ ~~  <
+~-~~ `----------------------------'    `  `  `  `  `  `  `  `  `  `  `  `  `    <
+
+You might find it interesting to know that if you
+	force input B to 0
+	and tie the carry.in bit High
+we would get the same result
+
+Better still, we could let the user set Carry.In {high, low} as they prefer
+	...you might ask "why would you want a +0 module"
+	...for now: Trust me [spoiler: it will be useful in the next section]
+
+In the previous example, we simply used a half adder.
+
+
+~~~~ ,--------------------------------------.                                   <
+~~~ (  How Many Transistors is That So Far?  ) =================================<
+~~~~ `--------------------------------------'                                   <
+
+We started off needing a separate Adder and Subtractor
+
+You might remember that a Full Adder costs 14 transistors per bit
+...Therefore an N-bit adder costs (N * 14) transistors
+
+	==> 4-bit Full Adder costs (4 * 14 = 56) transistors
+
+We just worked out that each bit of an "Inverter" costs 4 transistors
+	# 1 for the inverting    NOT gate
+	# 4 for the Half Adder's XOR gate
+	# 2 for the Half Adder's AND gate
+
+	==> 4-bit 2's Complement costs (4 * 7 = 28) transistors
+
+Generically:
+	 _adder_      _____subtractor_____        __both__
+	                _2s__     _adder_
+	(N * 14)  +  ( (N * 7) + (N * 14) )  ==>  (N * 35)
+
+So (in 4-bit world) to BOTH have an Adder AND a Subtractor, our total cost is:
+
+	(4 * 14)  +  ( (4 * 7) + (4 * 14) )  ==>  (4 * 35)
+
+	(  56  )  +  ( (  28 ) + (  56  ) )  ==>  (  140 ) transistors
+
+(o) Separate Adder and Subtractor : Total cost = 140 transistors                .
+!                                                                               .
+!           (A  +  B)                         (A  -  B)                         .
+!            |     |                           |     |                          .
+!   ADDER    |     |                           |     |      SUBTRACTOR          .
+!            |     |                           |  +--M--+                       .
+!            |     |                           |  |  '  |                       .
+!            |     |                           |  |  4  |                       .
+!            |     |                           |  | 2's |                       .
+!            |     |                           |  +--M--+                       .
+!            `,    |                           `,    |     _                    .
+!             |  ,-'                            |  ,-'    |\                    .
+!             |  |                              |  |        \                   .
+!          ,--M--M--.                        ,--M--M--.      28 transistors     .
+!          |  A  B  |                        |  A  B  |                         .
+!    Cout--<Co  4 Ci<--0               Cout--<Co  4 Ci<--0                      .
+!          |  Σ S   |                        |  Σ S   |                         .
+!          `----M---'                        `----M---'                         .
+!               |     _                    _      |             TOTAL COST      .
+!               |    |\                    /|     |                140          .
+!             (A-B)    \                  /     (A-B)           transistors     .
+!                      56 transistors (each)                                    .
+!                                                                               .
+
+
+~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ <
+
+If we use a 2's module with an Enable pin,
+  we can ADD and SUBTRACT with the same circuit.
+
+To create a 2's module with an enable/disable feature,
+  we had to replace the NOT gates with XOR gates.
+
+So the cost of the 2's box has increased...
+
+Each bit of a 2's complement box now costs (N * 10) transistors  ^[was: N *  7]
+	# 4 for the inverting XOR gate
+	# 4 for the Adder's   XOR gate
+	# 2 for the Adder's   AND gate
+
+	# 4-bit 2's Complement costs (4 * 10 = 40) transistors       ^[was:     28]
+
+The cost of the Adder box is the same, (N * 14) transistors,     =[was: N * 14]
+...and now we only have one of them.
+
+Generically:
+	 _adder/subtractor_
+	  _2s__     _adder_
+	(N * 10) + (N * 14)  ==>  N * 24                             v[was: N * 35]
+
+So (in 4-bit world) to have a combined Adder/Subtractor, our total cost is
+
+	(4 * 10) + (4 * 14)  ==>  (4 * 24)
+
+	(  40  ) + (  56  )  ==>  (  96  ) transistors               v[was:    140]
+
+Although adding an "Enable" line to the 2's Complement module made it cost more,
+  Overall, we have REDUCED the number of transistors required by over 31% !!
+
+(o) Combined Adder and Subtractor : Total cost = 96 transistors                 .
+!                                                                               .
+!           (A  -  B)                                                           .
+!            |     |                                                            .
+!            |     |                                                            .
+!            |  +--M--+                                                         .
+!            |  |  '  |                                                         .
+!            |  |  4  <---e   0 = Add                                           .
+!            |  | 2's |       1 = Subtract                                      .
+!            |  +--M--+                                                         .
+!            `,    |     _                                                      .
+!             |  ,-'    |\                                                      .
+!             |  |        \                                                     .
+!          ,--M--M--.      40 transistors                                       .
+!          |  A  B  |                                                           .
+!    Cout--<Co  4 Ci<--0                                                        .
+!          |  Σ S   |                                                           .
+!          `----M---'                                                           .
+!               |     _                                         TOTAL COST      .
+!               |    |\                                             96          .
+!             result   \                                        transistors     .
+!                       56 transistors                                          .
+!                                                                               .
+~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ <
+
+Let's just run those numbers for a 64bit CPU
+
+Separate:  (N  * 14) + ((N  *  7) + (N  * 14)) ==> N * 35
+Combined:               (N  * 10) + (N  * 14)  ==> N * 24
+
+Separate:  (64 * 14) + ((64 *  7) + (64 * 14)) ==> 64 * 35 == 2,240 transistors
+Combined:               (64 * 10) + (64 * 14)  ==> 64 * 24 == 1,536
+.                                                             =====
+.                                                     Saving:   704 transistors
+.                                                             =====
+
+...Savings like this are going to become VERY significant VERY quickly !

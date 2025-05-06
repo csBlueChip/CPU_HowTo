@@ -1,0 +1,441 @@
+T.O.C.
+
+	P-MOSFET Logic
+		BUFFER
+		AND
+		OR
+
+	N-MOSFET Logic
+		NOT
+		NAND
+		NOR
+
+	Combinatorial Logic
+		XOR
+		A NIMPLY B
+		A  IMPLY B
+		B NIMPLY A
+		B  IMPLY A
+
+	Logical Equivalences
+
+	Combinatorial Logic - NAND
+		NAND
+		NOT
+		BUFFER
+		AND
+		OR
+		XOR
+
+	Input Mechanisms
+		SPDT
+		SPST
+
+	Adders
+		Half Adder (with gates)
+		Full Adder
+
+	Counting
+		4-bit Counting Circle (with negative numbers)
+
+	Adder/Subtractor
+		4-bit Inverter, with ENable
+		Full Adder/Subtractor module - block diagram
+
+	Memory
+		D-Type Latch - Logic Diagram
+
+	Clock
+		Ring Oscillator
+
+
+~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~ ~-~
+
+(o) BUFFER pocket reference                                                     .
+!                                                               P-CHANNEL       .
+!                           (+)---{A}----{Y}---(-)                              .
+!       |`.                                                                     .
+!       |  `.                                               |   A   |   Y   |   .
+!   A---|    `.---Y           BUFFER        ---|>---        +-------+-------+   .
+!       |   .'                                              |   0   |   0   |   .
+!       | .'                                                |   1   |  =1=  |   .
+!       |'                                                                      .
+!                   if  (A == 1)  then  {Y=1}  else  {Y=0}                      .
+!                                                                               .
+
+(o) "AND" pocket reference                                                      .
+!                                                               P-CHANNEL       .
+!                       (+)---{A}---{B}---{Y}---(-)                             .
+!	    +-----.                                             | A | B |   Y   |   .
+!	A---|      \                                __          +----+--+-------+   .
+!	    |       }---Y         AND           ---|  \___      | 0 | 0 |   0   |   .
+!	B---|      /                            ---|__/         | 0 | 1 |   0   |   .
+!	    +-----'                                             | 1 | 0 |   0   |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!   if  ((A == 1) && (B == 1))  then  {Y=1}  else  {Y=0}                        .
+!                                                                               .
+
+(o) OR pocket reference                                                         .
+!                                                               P-CHANNEL       .
+!                                 +-{B}-+                                       .
+!                           (+)---+-{A}-+-{Y}---(-)                             .
+!	    +--._                                               | A | B |   Y   |   .
+!	A----\   `-.                                _           +----+--+-------+   .
+!	      }    ,'---Y         OR            ---\ `.___      | 0 | 0 |   0   |   .
+!	B----/  _,'                             ---/_,'         | 0 | 1 |  =1=  |   .
+!	    +--'                                                | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!   if  ((A == 1) || (B == 1))  then  {Y=1}  else  {Y=0}                        .
+!                                                                               .
+
+(o) NOT pocket reference                                                        .
+!                                                               N-CHANNEL       .
+!                                 +-{A}-+                                       .
+!                           (+)---+-{Y}-+---(-)                                 .
+!	    |`.                                                                     .
+!	    |  `.  _                                            |   A   |   Y   |   .
+!	A---|    `(_)---Y         NOT           ---|>o---       +-------+-------+   .
+!	    |   .'                INVERTER                      |   0   |  =1=  |   .
+!	    | .'                                                |   1   |   0   |   .
+!       |'                                                                      .
+!                   if  (A == 1)  then  {Y=0}  else  {Y=1}                      .
+!                                                                               .
+
+(o) NAND pocket reference                                                       .
+!                                                               N-CHANNEL       .
+!                              +-{A}---{B}-+                                    .
+!                        (+)---+----{Y}----+---(-)                              .
+!	    +-----.                                             | A | B |   Y   |   .
+!	A---|      \  _                             __          +----+--+-------+   .
+!	    |       }(_)---Y      NAND          ---|  \o___     | 0 | 0 |  =1=  |   .
+!	B---|      /                            ---|__/         | 0 | 1 |  =1=  |   .
+!	    +-----'                                             | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |   0   |   .
+!                                                                               .
+!   if  ((A == 1) && (B == 1))  then  {Y=0}  else  {Y=1}                        .
+!                                        ^------------------ NOT                .
+!                                                                               .
+
+(o) NOR pocket reference                                                        .
+!                                                               N-CHANNEL       .
+!                                 +-{B}-+                                       .
+!                                 +-{A}-+                                       .
+!                           (+)---+-{Y}-+---(-)                                 .
+!	    +--._                                               | A | B |   Y   |   .
+!	A----\   `-.  _                             _           +----+--+-------+   .
+!	      }    ,'(_)---Y      NOR           ---\ `.o___     | 0 | 0 |  =1=  |   .
+!	B----/  _,'                             ---/_,'         | 0 | 1 |   0   |   .
+!	    +--'                                                | 1 | 0 |   0   |   .
+!                                                           | 1 | 1 |   0   |   .
+!                                                                               .
+!   if  ((A == 1) || (B == 1))  then  {Y=0}  else  {Y=1}                        .
+!                                        ^------------------ NOT                .
+!                                                                               .
+
+(o) XOR pocket reference                                                        .
+!                                                                               .
+!                       +--{A}--+   +--{A}---{B}--+                             .
+!                 (+)---+--{B}--+---+---- {Y}-----+---(-)                       .
+!                                                                               .
+!	    . +--._                                             | A | B |   Y   |   .
+!	A----\ \   `-.                               _          +----+--+-------+   .
+!	      ) }    ,'---Y       XOR/EOR       ---\\ `.___     | 0 | 0 |   0   |   .
+!	B----/ /  _,'                           ---//_,'        | 0 | 1 |  =1=  |   .
+!	    ' +--'                                              | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |   0   |   .
+!                                                                               .
+!   if  ((A == 1) ^ (B == 1))  then  {Y=1}  else  {Y=0}                         .
+!   if  (      (A != B)     )  then  {Y=1}  else  {Y=0}                         .
+!                                                                               .
+
+(o) "A NIMPLY B" pocket reference                                               .
+!                                                                               .
+!                                   +--{B}--+                                   .
+!                        (+)---{A}--+--{Y}--+---(-)                             .
+!	       +-----.                                          | A | B |   Y   |   .
+!	A------|      \                             __          +----+--+-------+   .
+!	     _ |       }---Y    A AND NOT(B)    ---|  \___      | 0 | 0 |   0   |   .
+!	B---(_)|      /         A NIMPLY B      --o|__/         | 0 | 1 |   0   |   .
+!	       +-----'                                          | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |   0   |   .
+!   if  ((A == 1) && (B == 0))  then  {Y=1}  else  {Y=0}                        .
+!                                                                               .
+
+(o) "A IMPLY B" pocket reference                                                .
+!                                                                               .
+!	     _ +--._                                            | A | B |   Y   |   .
+!	A---(_)-\   `-.                             _           +----+--+-------+   .
+!	         }    ,'---Y    NOT(A) OR B     --o\ `.___      | 0 | 0 |  =1=  |   .
+!	B-------/  _,'           A IMPLY B      ---/_,'         | 0 | 1 |  =1=  |   .
+!	       +--'                                             | 1 | 0 |   0   |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!   if  ((A == 0) || (B == 1))  then  {Y=1}  else  {Y=0}                        .
+!                                                                               .
+
+(o) "B NIMPLY A" pocket reference                                               .
+!                                                                               .
+!                                   +--{A}--+                                   .
+!                        (+)---{B}--+--{Y}--+---(-)                             .
+!	     _ +-----.                                          | A | B |   Y   |   .
+!	A---(_)|      \                             __          +----+--+-------+   .
+!	       |       }---Y    NOT(A) AND B    --o|  \___      | 0 | 0 |   0   |   .
+!	B------|      /         B NIMPLY A      ---|__/         | 0 | 1 |  =1=  |   .
+!	       +-----'                                          | 1 | 0 |   0   |   .
+!                                                           | 1 | 1 |   0   |   .
+!   if  ((A == 0) && (B == 1))  then  {Y=1}  else  {Y=0}                        .
+!                                                                               .
+
+(o) "B IMPLY A" pocket reference                                                .
+!                                                                               .
+!	       +--._                                            | A | B |   Y   |   .
+!	A-------\   `-.                             _           +----+--+-------+   .
+!	     _   }    ,'---Y    NOT(B) OR A     ---\ `.___      | 0 | 0 |  =1=  |   .
+!	B---(_)-/  _,'           B IMPLY A      --o/_,'         | 0 | 1 |   0   |   .
+!	       +--'                                             | 1 | 0 |  =1=  |   .
+!                                                           | 1 | 1 |  =1=  |   .
+!   if  ((A == 1) || (B == 0))  then  {Y=1}  else  {Y=0}                        .
+!                                                                               .
+
+(o) Logical Equivalences                                                        .
+!                                                                               .
+!   ( A NAND B )  ==  !( !A NOR  !B )                                           .
+!   ( A NAND B )  ==   ( !A  OR  !B )                                           .
+!   ( A  AND B )  ==   ( !A NOR  !B )                                           .
+!   ( A  AND B )  ==  !( !A  OR  !B )                                           .
+!                                                                               .
+!   ( A NOR B )  ==  !( !A NAND  !B )                                           .
+!   ( A NOR B )  ==   ( !A  AND  !B )                                           .
+!   ( A  OR B )  ==   ( !A NAND  !B )                                           .
+!   ( A  OR B )  ==  !( !A  AND  !B )                                           .
+!                                                                               .
+!   !A  ==  (A NOR A)  == (A NAND A)                                            .
+!                                                                               .
+
+(o) NAND pocket reference (using NAND gates)                                    .
+!                                                                               .
+!                                      ___                                      .
+!                                A ---|   \                                     .
+! NAND:    (A NAND B)                 |    )O--- Y                              .
+!                                B ---|___/                                     .
+!                                                                               .
+
+(o) NOT pocket reference (using NAND gates)                                     .
+!                                          ___                                  .
+!                                     .---|   \                                 .
+! NOT:     (A NAND A)            A ---+   |    )O--- Y                          .
+!                                     `---|___/                                 .
+!                                                                               .
+
+(o) BUFFER pocket reference (using NAND gates)                                  .
+!                                          ___           ___                    .
+!                                     .---|   \     .---|   \                   .
+! Buffer:  (NOT (A NAND A))      A ---+   |    )O---+   |    )O--- Y            .
+!                                     `---|___/     `---|___/                   .
+!                                                                               .
+
+(o) AND pocket reference (using NAND gates)                                     .
+!                                      ___          ___                         .
+!                                A ---|   \     .--|   \                        .
+! AND:     (NOT (A NAND B))           |    )O---+  |    )O--- Y                 .
+!                                B ---|___/     `--|___/                        .
+!                                                                               .
+
+(o) OR pocket reference (using NAND gates)                                      .
+!                                          ___                                  .
+!                                     .---|   \                                 .
+!          (A NAND A)            A ---+   |    )O--.    ___                     .
+!              ||                     `---|___/     `--|   \                    .
+! OR:         NAND                         ___         |    )O--- Y             .
+!              ||                     .---|   \     ,--|___/                    .
+!          (B NAND B)            B ---+   |    )O--'                            .
+!                                     `---|___/                                 .
+!                                                                               .
+
+(o) XOR pocket reference (using NAND gates)                                     .
+!                                                    ___                        .
+!                                    ,--------------|   \                       .
+!          (A NAND (A NAND B))       |   ___        | a' )O--.    ___           .
+!                 ||             A --+--|   \    ,--|___/     `--|   \          .
+! XOR/EOR:       NAND                   |    )O--+   ___         |    )O--- Y   .
+!                 ||             B --+--|___/    `--|   \     ,--|___/          .
+!          (B NAND (A NAND B))       |              | b' )O--'                  .
+!                                    `--------------|___/                       .
+!                                                                               .
+
+(o) SPDT Input Mechanism                                                        .
+!                                                                               .
+!                [Gnd]  [+V]                                                    .
+!                  |     |                                                      .
+!                  |    |#|                                                     .
+!                  |    |#|          <--- Current Limiting Resistor             .
+!                  |    |#|                                                     .
+!                  |     |                                                      .
+!          Release o\    o Press                                                .
+!             0      \       1       <--- Toggle switch (SPDT)                  .
+!                     o                                                         .
+!                     |                                                         .
+!                     |                                                         .
+
+(o) SPST Input Mechanism                                                        .
+!                                                                               .
+!                Press to "make" switch                                         .
+!                     (SPST/PtM)                                                .
+!                                                                               .
+!                          |                                                    .
+!                        __V__                                                  .
+!     [+V]----[###]-------o o----+----[###]---[Gnd]                             .
+!              10K               |     100K                                     .
+!                                |                                              .
+
+(o) Half Adder pocket reference (with gates)                                    .
+!                                                                               .
+!             +-----.                                                           .
+!      ,------|      \                                                          .
+!      |      |       }--- CARRY        | |                     (AND)  (XOR)    .
+!      |  ,---|      /                 _|_|_          | A | B | Carry | Sum |   .
+!  A---+  |   +-----'                 | A B |         +----+--+-------+-----+   .
+!      |  |                        ---<C Σ  |         | 0 | 0 |   0   |  0  |   .
+!  B---{--+                           |__S__|         | 0 | 1 |   0   | =1= |   .
+!      |  |  . +--._                     |            | 1 | 0 |   0   | =1= |   .
+!      |  `---\ \   `-.                  |            | 1 | 1 |  =1=  |  0  |   .
+!      |       ) }    ,'--- SUM                                                 .
+!      `------/ /  _,'                                                          .
+!            ' +--'                                                             .
+!                                                                               .
+!   if  ((A == 1) && (B == 1))  then  {CARRY=1}  else  {CARRY=0}                .
+!   if  ((A == 1) ^  (B == 1))  then  {SUM=1}    else  {SUM=0}                  .
+!                                                                               .
+
+(o) Full Adder pocket reference                                                 .
+!                                                                               .
+!                             FULL ADDER                                        .
+!                                                | A | B | C | CARRY |  SUM  |  .
+!            |   |                               +----+---+--+-------+-------+  .
+!      ,-----v---v----.                          | 0 | 0 | 0 |   0   |   0   |  .
+!      |     A   B    |           _|_|_          | 0 | 1 | 0 |   0   |  =1=  |  .
+!      |              |          | A B |         | 1 | 0 | 0 |   0   |  =1=  |  .
+!    --< C.out Σ C.in <--      --<C Σ c<--       | 1 | 1 | 0 |  =1=  |   0   |  .
+!      |              |          |__S__|         |   |   |   |       |       |  .
+!      |      Sum     |             |            | 0 | 0 | 1 |   0   |  =1=  |  .
+!      `-------v------'                          | 0 | 1 | 1 |  =1=  |   0   |  .
+!              |                                 | 1 | 0 | 1 |  =1=  |   0   |  .
+!                                                | 1 | 1 | 1 |  =1=  |  =1=  |  .
+!                                    _                                          .
+!                   ,---------------\|`.___                                     .
+!              __   |       __   .--/_,'   |                                    .
+!    A>--+----|& \__| +----|& \__|         `---> Co = (A & B) | ((A ^ B) & Ci)  .
+!    B>--{-+--|__/    | ,--|__/                                                 .
+!   Ci>--{-{----------{-+                  .---> S  = (A ^ B) ^ Ci              .
+!        | |    _   ,-+ |    _             |                                    .
+!        | `--\\^`._| | `--\\^`.___________|                                    .
+!        `----//_,'   `----//_,'                                                .
+!                                                                               .
+
+(o) 4-bit Counting Circle (with negative numbers)                               .
+!                                                                               .
+!      Carry.out                                                                .
+!            \__00__                                                            .
+!          _-'\     `-_                                                         .
+!         /    \00      \      \    +1                                          .
+!       -1   15    01   -15     \ |                                             .
+!     -2   14        02  -14     \|                                             .
+!    -3   13          03  -13           add      1 (+1) :  move      clockwise  .
+!   -4   12            04  -12          subtract 1 (-1) :  move anti-clockwise  .
+!    -5   11          05  -11                                                   .
+!     -6   10        06  -10     /|                                             .
+!       -7   09    07   -9      / |                                             .
+!         \_    08    _/       /     -1                                         .
+!           -.__  __.-                                                          .
+!               -8                                                              .
+!                                                                               .
+
+(o) 4-bit Inverter, with ENable                                                 .
+!                                                                               .
+!        {Enable}                                                               .
+!         |                                                                     .
+!         |           _                                                         .
+!         +---[e]---\\ `.___ Y0                                                 .
+!    A0---{---[0]---//_,'                                                       .
+!         |           _                         M                               .
+!         +---[e]---\\ `.___ Y1              +--M--+                            .
+!    A1---{---[1]---//_,'                    |  A  |                            .
+!         |           _                      |  4 e<--                          .
+!         +---[e]---\\ `.___ Y2              |  ~  |                            .
+!    A2---{---[2]---//_,'                    +--M--+                            .
+!         |           _                         M                               .
+!         `---[e]---\\ `.___ Y3                                                 .
+!    A3-------[3]---//_,'                                                       .
+!                                                                               .
+
+(o) Full Adder/Subtractor module - block diagram                                .
+!                                                                               .
+!   A: 3210    B: 3210                                                          .
+!      \::/       \::/                                                          .
+!       `M         `M                                                           .
+!        M          M                                                           .
+!        M       +--M--+                                                        .
+!        M       |  A  |                                                        .
+!        M       |  4 e<---.                                                    .
+!        M       |  ~  |   |                                                    .
+!        M       +--M--+   |                                                    .
+!        M          M      |                                                    .
+!        MMMMM      M      +--- Subtact       0 : Add                           .
+!            M  MMMMM      |     Enable       1 : Subtract                      .
+!            M  M          |                                                    .
+!         ,--M--M--.       |                                                    .
+!         |  A  B  |       |                                                    .
+!       --<Co  4 Ci<-------'                                                    .
+!         |  Σ S   |                                                            .
+!         `----M---'                                                            .
+!              |                                                                .
+!                                                                               .
+
+(o) D-Type Latch - Logic Diagram                                                .
+!                                                                               .
+!                    +-----.                                                    .
+!             ,------|      \      +--._                                        .
+!             |      | Set   }======\   `-.  _        _                         .
+!             |   ,--|      /        }    ,'(_)--+--- Q  = NOT(StoredValue)     .
+!             |   |  +-----'    .---/  _,'       |                              .
+!             |   |             |  +--'          |                              .
+!             |   |             |       .--------'                              .
+!   Enable ---{---+             |       |                                       .
+!             |   |             `-------{--------.                              .
+!     Data ---+   |                     |        |                              .
+!             |   |             ,-------'        |                              .
+!             |   |             |                |                              .
+!             |   |             |  +--._         |                              .
+!             |   |  +-----.     ---\   `-.  _   |                              .
+!             |   `--|      \        }    ,'(_)--+--- Q  = StoredValue          .
+!             |    _ | Reset }======/  _,'                                      .
+!             `---(_)|      /      +--'                                         .
+!                    +-----'                                                    .
+!                                                                               .
+
+(o) Ring Oscillator                                                             .
+!                                                                               .
+!                .---------------.       :10nS :10nS :10nS :10nS :10nS :10nS :  .
+!                | * |   _       |       :     :     :     :     :     :     :  .
+!                | @ | ,' `.   ; |       :<-- 20nS ->:<-- 20nS ->:<-- 20nS ->:  .
+!            .---+-@ |      `-'  |              _____       _____       _____   .
+!            |   `---------------'        _____|     |_____|     |_____|     |__.
+!            |                                                                  .
+!            |                                                                  .
+!      ,-----x---------------.                  assuming each gate has          .
+!      |     Z'              |                  a 10nS propogation Delay        .
+!      |                     |                                                  .
+!      |Z'               ____|____                                              .
+!     (_)                \   X   /                                              .
+!     / \                 \     /                                               .
+!    /   \                 \   /                                                .
+!   /     \                 \_/                                                 .
+!  /___Z___\                (_)                                                 .
+!      |                     |X'                                                .
+!      |                     |                                                  .
+!      |            .'|      |                                                  .
+!      |     Y'_  ,'  |      |                                                  .
+!      `------(_)'   Y|------'                                                  .
+!    Y'          `.   |       X'                                                .
+!                  `. |                                                         .
+!                    `|                                                         .
+!                                                                               .
